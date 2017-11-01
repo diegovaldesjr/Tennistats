@@ -1,0 +1,22 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="edittext_textsize_login">22sp</dimen>
+    <dimen name="padding_horizontal_login">32dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="textsize_jugadorgameconfig">15sp</dimen>
+    <dimen name="spinner_padding">5dp</dimen>
+    <dimen name="textsize_jugador_partidolist">18dp</dimen>
+    <dimen name="marginright_set">10dp</dimen>
+    <dimen name="textsize_item_partidolist">16dp</dimen>
+    <dimen name="height_partidolist">66dp</dimen>
+    <dimen name="padding_list">10dp</dimen>
+    <dimen name="marginleft_fecha">8dp</dimen>
+    <dimen name="textsize_jugador_list">24dp</dimen>
+    <dimen name="tamano_playericon">48dp</dimen>
+    <dimen name="textsize_resultado">18dp</dimen>
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="edittext_margin">10dp</dimen>
+    <dimen name="tamano_playericon_grande">72dp</dimen>
+</resources>

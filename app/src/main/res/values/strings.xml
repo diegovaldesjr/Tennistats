@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">Tennistats</string>
+    <string name="hint_username">Nombre de usuario</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="text_button_login">Login</string>
+    <string name="jugadorGameConfig">Jugador</string>
+    <string name="text_fechagameconfig">Fecha</string>
+    <string name="reglas">Reglas</string>
+    <string name="regla1">-Mejor de 3 sets</string>
+    <string name="regla2">-Mejor de 6 juegos</string>
+    <string name="regla3">-Igualdad Normal</string>
+    <string name="regla4">-Mismas reglas en el ultimo set</string>
+    <string name="text_button_gameconfig">Empezar</string>
+    <string name="categoriaGameConfig">Categoria</string>
+    <string name="fechagameconfig">09-10-2017</string>
+    <string name="jugador_partidolist">Rafael Nadal</string>
+    <string name="set_result_partidolist">0-0</string>
+    <string name="fecha_partidolist">09/10/2017</string>
+    <string name="categoria_partidolist">Categoria</string>
+    <string name="resultado">Resultados:</string>
+    <string name="text_button_verestadisticas">Ver Estadisticas</string>
+
+    <string-array name="dropdown_genero">
+        <item>Eliga un genero</item>
+        <item>Masculino</item>
+        <item>Femenino</item>
+    </string-array>
+
+    <string-array name="dropdown_mano">
+        <item>Mano diestra</item>
+        <item>Derecha</item>
+        <item>Izquierda</item>
+    </string-array>
+
+    <string-array name="dropdown_categoria">
+        <item>Elegir categoria</item>
+        <item>Sub-17</item>
+        <item>Sub-18</item>
+        <item>Sub-21</item>
+    </string-array>
+
+    <string name="title_activity_prueba">PruebaActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="hint_nombre">Nombre</string>
+    <string name="hint_edad">Edad</string>
+    <string name="hint_apellido">Apellido</string>
+    <string name="text_button_agregar">Agregar</string>
+</resources>

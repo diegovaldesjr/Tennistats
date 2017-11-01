@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_partidolist"
+    android:padding="@dimen/padding_list">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/icons8_tennis_player"/>
+
+    <TextView
+        android:id="@+id/jugadorList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/jugador_partidolist"
+        android:textSize="@dimen/textsize_jugador_list"
+        android:textColor="@color/secondary_text"
+        android:layout_marginLeft="@dimen/marginleft_fecha"/>
+
+</LinearLayout>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.diegovaldesjr.tennistats.PartidoActivity">
+
+    <include layout="@layout/actionbar_toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_list">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/tamano_playericon"
+                    android:layout_height="@dimen/tamano_playericon"
+                    android:background="@drawable/icons8_tennis_player"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/jugadorPartido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/jugador_partidolist"
+                    android:textSize="@dimen/textsize_jugador_list"
+                    android:textColor="@color/primary_text"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_icons8_calendar"/>
+
+                    <TextView
+                        android:id="@+id/fechaPartido"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fecha_partidolist"
+                        android:textSize="@dimen/textsize_item_partidolist"
+                        android:textColor="@color/primary_text"
+                        android:layout_marginLeft="@dimen/marginleft_fecha"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/categoriaPartido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/categoria_partidolist"
+                    android:textSize="@dimen/textsize_item_partidolist"
+                    android:textColor="@color/primary_text"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/activity_vertical_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/resultado"
+                    android:textColor="@color/primary_text"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/textsize_resultado"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/set1Partido"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/set_result_partidolist"
+                        android:layout_marginRight="@dimen/marginright_set"
+                        android:textSize="@dimen/textsize_item_partidolist"
+                        android:textColor="@color/primary_text"/>
+
+                    <TextView
+                        android:id="@+id/set2Partido"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/set_result_partidolist"
+                        android:layout_marginRight="@dimen/marginright_set"
+                        android:textSize="@dimen/textsize_item_partidolist"
+                        android:textColor="@color/primary_text"/>
+
+                    <TextView
+                        android:id="@+id/set3Partido"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/set_result_partidolist"
+                        android:textSize="@dimen/textsize_item_partidolist"
+                        android:textColor="@color/primary_text"/>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/verEstadisticas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:text="@string/text_button_verestadisticas"
+                    android:theme="@style/RaisedButtonDark"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick=""/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

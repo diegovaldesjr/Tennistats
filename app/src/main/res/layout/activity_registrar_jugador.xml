@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.diegovaldesjr.tennistats.RegistrarJugadorActivity">
+
+    <include layout="@layout/actionbar_toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_list">
+
+            <ImageView
+                android:layout_width="@dimen/tamano_playericon"
+                android:layout_height="@dimen/tamano_playericon"
+                android:background="@drawable/icons8_tennis_player"
+                android:layout_gravity="center"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/edittext_margin">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/nombreJugador"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_nombre"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/edittext_margin">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/apellidoJugador"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_apellido"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/edittext_margin">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edadJugador"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_edad"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/spinnerGeneroJugador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/primary_light"
+                android:entries="@array/dropdown_genero"
+                android:padding="@dimen/spinner_padding"
+                android:layout_marginTop="@dimen/edittext_margin"/>
+
+            <Spinner
+                android:id="@+id/spinnerCategoriaJugador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/primary_light"
+                android:entries="@array/dropdown_categoria"
+                android:padding="@dimen/spinner_padding"
+                android:layout_marginTop="@dimen/edittext_margin"/>
+
+            <Spinner
+                android:id="@+id/spinnerManoJugador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/primary_light"
+                android:entries="@array/dropdown_mano"
+                android:padding="@dimen/spinner_padding"
+                android:layout_marginTop="@dimen/edittext_margin"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/text_button_agregar"
+                android:theme="@style/RaisedButtonDark"
+                android:layout_gravity="center_horizontal"
+                android:onClick="registrarUsuario"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</android.support.design.widget.CoordinatorLayout>

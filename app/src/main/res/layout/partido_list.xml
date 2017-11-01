@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_partidolist"
+    android:padding="@dimen/padding_list"
+    android:id="@+id/layoutPartidolist">
+
+    <TextView
+        android:id="@+id/jugadorPartidolist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/jugador_partidolist"
+        android:textSize="@dimen/textsize_jugador_partidolist"
+        android:textStyle="bold"
+        android:textColor="@color/secondary_text"
+        android:layout_alignParentLeft="true"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true">
+
+        <TextView
+            android:id="@+id/set1Partidolist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_result_partidolist"
+            android:layout_marginRight="@dimen/marginright_set"
+            android:textSize="@dimen/textsize_item_partidolist"
+            android:textColor="@color/secondary_text"/>
+
+        <TextView
+            android:id="@+id/set2Partidolist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_result_partidolist"
+            android:layout_marginRight="@dimen/marginright_set"
+            android:textSize="@dimen/textsize_item_partidolist"
+            android:textColor="@color/secondary_text"/>
+
+        <TextView
+            android:id="@+id/set3Partidolist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set_result_partidolist"
+            android:textSize="@dimen/textsize_item_partidolist"
+            android:textColor="@color/secondary_text"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_icons8_calendar"/>
+
+        <TextView
+            android:id="@+id/fechaPartidolist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fecha_partidolist"
+            android:textSize="@dimen/textsize_item_partidolist"
+            android:textColor="@color/secondary_text"
+            android:layout_marginLeft="@dimen/marginleft_fecha"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/categoriaPartidolist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/categoria_partidolist"
+        android:textSize="@dimen/textsize_item_partidolist"
+        android:textColor="@color/secondary_text"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

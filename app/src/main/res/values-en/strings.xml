@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hint_username">Nombre de usuario</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="text_button_login">Login</string>
+    <string name="jugadorGameConfig">Jugador</string>
+    <string name="text_fechagameconfig">Fecha</string>
+    <string name="reglas">Reglas</string>
+    <string name="regla1">-Mejor de 3 sets</string>
+    <string name="regla2">-Mejor de 6 juegos</string>
+    <string name="regla3">-Igualdad Normal</string>
+    <string name="regla4">-Mismas reglas en el ultimo set</string>
+    <string name="text_button_gameconfig">Empezar</string>
+    <string name="categoriaGameConfig">Categoria</string>
+    <string name="fechagameconfig">09-10-2017</string>
+    <string name="jugador_partidolist">Rafael Nadal</string>
+    <string name="set_result_partidolist">0-0</string>
+    <string name="fecha_partidolist">09/10/2017</string>
+    <string name="categoria_partidolist">Categoria</string>
+    <string name="resultado">Resultados:</string>
+    <string name="text_button_verestadisticas">Ver Estadisticas</string>
+    <string name="hint_nombre">Nombre</string>
+    <string name="hint_edad">Edad</string>
+    <string name="hint_apellido">Apellido</string>
+    <string name="text_button_agregar">Agregar</string>
+
+    <string-array name="dropdown_genero">
+        <item>Choose a Item</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+</resources>
