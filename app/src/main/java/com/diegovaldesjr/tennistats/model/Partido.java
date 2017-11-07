@@ -9,13 +9,32 @@ import java.util.Date;
 
 public class Partido implements Serializable {
 
-    private String jugador, categoria;
-    private Date fecha;
+    private int idPartido,idJugador;
+    private String jugador, categoria, fecha;
+    //private Date fecha;
 
-    public Partido(String jugador, Date fecha, String categoria) {
+    public Partido(int idPartido, int idJugador, String jugador, String fecha, String categoria) {
+        this.idPartido = idPartido;
+        this.idJugador = idJugador;
         this.jugador = jugador;
         this.fecha = fecha;
         this.categoria = categoria;
+    }
+
+    public int getIdPartido() {
+        return idPartido;
+    }
+
+    public void setIdPartido(int idPartido) {
+        this.idPartido = idPartido;
+    }
+
+    public int getIdJugador() {
+        return idJugador;
+    }
+
+    public void setIdJugador(int idJugador) {
+        this.idJugador = idJugador;
     }
 
     public String getJugador() {
@@ -26,11 +45,11 @@ public class Partido implements Serializable {
         this.jugador = jugador;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 

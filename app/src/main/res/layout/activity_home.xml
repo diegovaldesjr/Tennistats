@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     tools:context="com.diegovaldesjr.tennistats.HomeActivity">
 
-    <include layout="@layout/tab_toolbar"/>
+    <include layout="@layout/actionbar_toolbar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
             fab:fab_colorNormal="?attr/colorAccent"
             fab:fab_icon="@drawable/icons8_stadium__white"
             fab:fab_size="mini"
-            android:onClick="crearPartido"/>
+            android:onClick="crearPartidoIntent"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/accion_crearjugador"
@@ -50,7 +50,7 @@
             fab:fab_colorNormal="?attr/colorAccent"
             fab:fab_icon="@drawable/icons8_tennis_player_white"
             fab:fab_size="mini"
-            android:onClick="crearJugador"/>
+            android:onClick="crearJugadorIntent"/>
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

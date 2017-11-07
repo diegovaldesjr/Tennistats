@@ -25,6 +25,10 @@ public class Jugador implements Serializable {
         this.apellido = apellido;
     }
 
+    public Jugador(){
+
+    }
+
     public int getIdJugador() {
         return idJugador;
     }

@@ -48,9 +48,21 @@ public class LoginActivity extends AppCompatActivity {
 
     public void iniciarSesion(View view){
 
+        JSONObject json = new JSONObject();
+
+        try {
+            json.put("grant_type", "password");
+            json.put("client_id", 2);
+            json.put("client_secret", "wzeiLKWbx4Goyy2gSiwICgTxa589mXrYa4PxQ0Hq");
+            json.put("username", "luis");
+            json.put("password", "luis123");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "", json,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://25.41.117.103:8000/oauth/token", json,
                 new Response.Listener<JSONObject>(){
                     //Listener para exito
                     @Override
@@ -59,12 +71,12 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = user.edit();
 
                         try {
-                            editor.putString("token", response.getString(""));
+                            editor.putString("token", response.getString("access_token"));
                             editor.commit();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        avanzarHome();
+                        //avanzarHome();
                         Log.d("JSON", "Respuesta" + response.toString());
                     }
                 },
@@ -78,7 +90,5 @@ public class LoginActivity extends AppCompatActivity {
 
         //Agregar json al request
         queue.add(jsonObjectRequest);
-
-        avanzarHome();
     }
 }

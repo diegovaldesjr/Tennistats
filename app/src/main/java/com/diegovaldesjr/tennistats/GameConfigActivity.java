@@ -21,12 +21,14 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.diegovaldesjr.tennistats.model.Jugador;
+import com.diegovaldesjr.tennistats.model.Partido;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +36,8 @@ import java.util.Map;
 public class GameConfigActivity extends AppCompatActivity {
 
     private Spinner spinnerJugador, spinnerCategoria;
-    JSONArray jsonJugadores;
     SharedPreferences user;
+    JSONObject partido;
 
     ArrayList<Jugador> jugadores = new ArrayList<>();
 
@@ -43,13 +45,15 @@ public class GameConfigActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_config);
+        obtenerJugadores();
+
+        partido = new JSONObject();
 
         spinnerCategoria = (Spinner) findViewById(R.id.spinnerCategoriaGameconfig);
-        spinnerCategoria.setOnItemSelectedListener(new ItemSelectedListener(spinnerCategoria));
+        spinnerCategoria.setOnItemSelectedListener(categoriaSelectedListener);
 
         spinnerJugador = (Spinner) findViewById(R.id.spinnerJugadorGameconfig);
-        addItemsOnSpinnerDynamic();
-        spinnerJugador.setOnItemSelectedListener(JugadorItemSelectedListener);
+        spinnerJugador.setOnItemSelectedListener(jugadorSelectedListener);
 
         user = getSharedPreferences("user", Context.MODE_PRIVATE);
 
@@ -69,31 +73,33 @@ public class GameConfigActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
     }
 
-    public void addItemsOnSpinnerDynamic() {
+    public void obtenerJugadores() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://192.168.151.239:8000/api/jugadores", null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://25.41.117.103:8000/api/jugadores", null,
                 new Response.Listener<JSONObject>(){
                     //Listener para exito
                     @Override
                     public void onResponse(JSONObject response) {
                         //Aqui se actualiza
                         Log.d("JSON", "Respuesta" + response.toString());
+                        Jugador jugador;
+
                         try {
-                            jsonJugadores = response.getJSONArray("jugadores");
+                            for(int i=0; i<response.getJSONArray("jugadores").length();i++){
+                                jugador = new Jugador(
+                                        response.getJSONArray("jugadores").getJSONObject(i).getInt("idJugador"),
+                                        response.getJSONArray("jugadores").getJSONObject(i).getString("nombre"),
+                                        response.getJSONArray("jugadores").getJSONObject(i).getString("apellido")
+                                );
+                                jugadores.add(jugador);
+                            }
+                            addItemsOnSpinnerJugadores(response.getJSONArray("jugadores"), response.getJSONArray("jugadores").length());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                        for(int i = 0; i< jsonJugadores.length(); i++){
-                            try {
-                                JSONObject row = jsonJugadores.getJSONObject(i);
-                                jugadores.add(new Jugador(row.getInt("idJugador"),row.getString("nombre"), row.getString("apellido")));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
                     }
                 },
                 new Response.ErrorListener(){
@@ -107,7 +113,7 @@ public class GameConfigActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError{
                 Map<String, String> params = new HashMap<>();
 
-                params.put("Authorization", "Bearer "+user.getString("token",""));
+                params.put("Authorization", "Bearer "+user.getString("access_token",""));
                 return params;
             }
         };
@@ -115,9 +121,18 @@ public class GameConfigActivity extends AppCompatActivity {
         //Agregar json al request
         queue.add(jsonObjectRequest);
 
-        ArrayList<String> dynamicList = new ArrayList<String>();
-        for (Jugador jugador : jugadores) {
-            dynamicList.add(jugador.getNombre()+" "+jugador.getApellido());
+    }
+
+    public void addItemsOnSpinnerJugadores(JSONArray array, int n){
+
+        List<String> dynamicList = new ArrayList<String>();
+
+        for (int i=0; i<array.length(); i++) {
+            try {
+                dynamicList.add(array.getJSONObject(i).getString("nombre")+" "+array.getJSONObject(i).getString("apellido"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
@@ -127,49 +142,79 @@ public class GameConfigActivity extends AppCompatActivity {
         spinnerJugador.setAdapter(dataAdapter);
     }
 
-    private AdapterView.OnItemSelectedListener JugadorItemSelectedListener = new Spinner.OnItemSelectedListener() {
-
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            Toast.makeText(
-                    parent.getContext(),
-                    "Item selected : "
-                            + parent.getItemAtPosition(pos).toString(),
-                    Toast.LENGTH_SHORT).show();
-        }
+    private AdapterView.OnItemSelectedListener jugadorSelectedListener = new Spinner.OnItemSelectedListener(){
 
         @Override
-        public void onNothingSelected(AdapterView<?> arg0) {
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            /*Toast.makeText(
+                    parent.getContext(), "Item selected:" + parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT
+            ).show();*/
 
-        }
-    };
-
-    //Spinner categoria listener
-    public class ItemSelectedListener implements AdapterView.OnItemSelectedListener {
-
-        Spinner spinner;
-
-        public ItemSelectedListener(Spinner spinner) {
-            this.spinner = spinner;
-        }
-
-        //get strings of first item
-        String firstItem = String.valueOf(spinnerCategoria.getSelectedItem());
-
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            if (firstItem.equals(String.valueOf(spinner.getSelectedItem()))) {
-
-            } else {
-                Toast.makeText(parent.getContext(),
-                        "You have selected : " + parent.getItemAtPosition(pos).toString(),
-                        Toast.LENGTH_LONG).show();
-
+            for(int i=0; i<jugadores.size(); i++){
+                if(jugadores.get(i).getNombre().contains(parent.getItemAtPosition(position).toString()) && jugadores.get(i).getApellido().contains(parent.getItemAtPosition(position).toString()))
+                    try {
+                        partido.put("idJugador", jugadores.get(i).getIdJugador());
+                        partido.put("fecha", Calendar.getInstance().getTime());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
             }
         }
 
         @Override
-        public void onNothingSelected(AdapterView<?> arg) {
+        public void onNothingSelected(AdapterView<?> parent) {
 
         }
+    };
 
+    private AdapterView.OnItemSelectedListener categoriaSelectedListener = new Spinner.OnItemSelectedListener(){
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            try {
+                partido.put("categoria", parent.getItemAtPosition(position).toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+
+    public void crearPartido(){
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://25.41.117.103:8000/api/partidos", partido,
+                new Response.Listener<JSONObject>(){
+                    //Listener para exito
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //Aqui se actualiza
+                        Log.d("JSON", "Respuesta" + response.toString());
+                        finish();
+                    }
+                },
+                new Response.ErrorListener(){
+                    //Listener para error
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Error", "Error Respuesta en JSON: " +error.getMessage());
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError{
+                Map<String, String> params = new HashMap<>();
+
+                params.put("Authorization", "Bearer "+user.getString("access_token",""));
+                return params;
+            }
+        };
+
+        //Agregar json al request
+        queue.add(jsonObjectRequest);
     }
 }
