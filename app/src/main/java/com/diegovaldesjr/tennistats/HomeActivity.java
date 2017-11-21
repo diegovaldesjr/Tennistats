@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         final ArrayList<Partido> partidos = new ArrayList<>();
 
-        JsonObjectRequest partidosRequest = new JsonObjectRequest(Request.Method.GET, "http://25.41.117.103:8000/api/partidos", null,
+        JsonObjectRequest partidosRequest = new JsonObjectRequest(Request.Method.GET, "http://"+user.getString("ip_address","")+"/api/partidos", null,
                 new Response.Listener<JSONObject>() {
                     //Listener para exito
                     @Override

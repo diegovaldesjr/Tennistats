@@ -25,7 +25,6 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
 
     SharedPreferences user;
-    JSONObject json = new JSONObject();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +33,9 @@ public class LoginActivity extends AppCompatActivity {
 
         user = getSharedPreferences("user", Context.MODE_PRIVATE);
 
-        try {
-            json.put("nombre", "valor");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        SharedPreferences.Editor editor = user.edit();
+        editor.putString("ip_address", "192.168.xx.xx:8000");
+        editor.commit();
     }
 
     public void avanzarHome(){
@@ -52,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
         try {
             json.put("grant_type", "password");
-            json.put("client_id", 2);
+            json.put("client_id", "2");
             json.put("client_secret", "wzeiLKWbx4Goyy2gSiwICgTxa589mXrYa4PxQ0Hq");
             json.put("username", "luis");
             json.put("password", "luis123");
@@ -62,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://25.41.117.103:8000/oauth/token", json,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://"+user.getString("ip_address","")+"/oauth/token", json,
                 new Response.Listener<JSONObject>(){
                     //Listener para exito
                     @Override
@@ -71,12 +68,12 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = user.edit();
 
                         try {
-                            editor.putString("token", response.getString("access_token"));
+                            editor.putString("access_token", response.getString("access_token"));
                             editor.commit();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        //avanzarHome();
+                        avanzarHome();
                         Log.d("JSON", "Respuesta" + response.toString());
                     }
                 },

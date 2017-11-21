@@ -77,7 +77,7 @@ public class GameConfigActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://25.41.117.103:8000/api/jugadores", null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "http://"+user.getString("ip_address","")+"/api/jugadores", null,
                 new Response.Listener<JSONObject>(){
                     //Listener para exito
                     @Override
@@ -188,7 +188,7 @@ public class GameConfigActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://25.41.117.103:8000/api/partidos", partido,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://"+user.getString("ip_address","")+"/api/partidos", partido,
                 new Response.Listener<JSONObject>(){
                     //Listener para exito
                     @Override

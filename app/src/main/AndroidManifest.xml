@@ -39,10 +39,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeActivity" />
         </activity>
-        <activity
-            android:name=".PruebaActivity"
-            android:label="@string/title_activity_prueba"
-            android:theme="@style/AppTheme" />
         <activity android:name=".RegistrarJugadorActivity"
             android:parentActivityName=".HomeActivity">
             <meta-data
