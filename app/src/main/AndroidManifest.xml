@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.diegovaldesjr.tennistats">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,31 +19,39 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".GameConfigActivity"
-            android:parentActivityName=".HomeActivity">
+            android:name=".view.CrearPartidoActivity"
+            android:parentActivityName=".view.ContainerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value=".view.ContainerActivity" />
         </activity>
         <activity
-            android:name=".HomeActivity"
-            android:parentActivityName=".LoginActivity">
+            android:name=".view.PartidoActivity"
+            android:parentActivityName=".view.ContainerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LoginActivity" />
+                android:value=".view.ContainerActivity" />
+        </activity>
+        <activity
+            android:name=".view.RegistrarJugadorActivity"
+            android:parentActivityName=".view.ContainerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.ContainerActivity" />
+        </activity>
+        <activity
+            android:name=".view.ContainerActivity"
+            android:parentActivityName=".view.LoginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.LoginActivity" />
             >
         </activity>
-        <activity android:name=".PartidoActivity"
-            android:parentActivityName=".HomeActivity">
+        <activity android:name=".view.JugadorActivity"
+            android:parentActivityName=".view.ContainerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
-        </activity>
-        <activity android:name=".RegistrarJugadorActivity"
-            android:parentActivityName=".HomeActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value=".view.ContainerActivity" />
         </activity>
     </application>
 

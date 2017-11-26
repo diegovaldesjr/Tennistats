@@ -1,10 +1,11 @@
-package com.diegovaldesjr.tennistats;
+package com.diegovaldesjr.tennistats.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import com.diegovaldesjr.tennistats.R;
 import com.diegovaldesjr.tennistats.model.Partido;
 
 public class PartidoActivity extends AppCompatActivity {

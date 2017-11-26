@@ -1,7 +1,6 @@
 package com.diegovaldesjr.tennistats.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.diegovaldesjr.tennistats.PartidoActivity;
+import com.diegovaldesjr.tennistats.view.PartidoActivity;
 import com.diegovaldesjr.tennistats.R;
 import com.diegovaldesjr.tennistats.model.Partido;
 
@@ -23,16 +22,18 @@ import java.util.ArrayList;
 public class PartidoAdapterRecyclerView extends RecyclerView.Adapter<PartidoAdapterRecyclerView.PartidoViewHolder> {
 
     private ArrayList<Partido> partidos;
-    private Context context;
+    private int resource;
+    private Activity activity;
 
-    public PartidoAdapterRecyclerView(ArrayList<Partido> partidos) {
+    public PartidoAdapterRecyclerView(ArrayList<Partido> partidos, int resource, Activity activity) {
         this.partidos = partidos;
+        this.resource = resource;
+        this.activity = activity;
     }
-
 
     @Override
     public PartidoAdapterRecyclerView.PartidoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.partido_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(resource, parent, false);
 
         return new PartidoViewHolder(view);
     }
@@ -53,10 +54,10 @@ public class PartidoAdapterRecyclerView extends RecyclerView.Adapter<PartidoAdap
         holder.layout.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PartidoActivity.class);
+                Intent intent = new Intent(activity, PartidoActivity.class);
                 intent.putExtra("partido", partido);
 
-                context.startActivity(intent);
+                activity.startActivity(intent);
             }
         });
 
@@ -74,7 +75,6 @@ public class PartidoAdapterRecyclerView extends RecyclerView.Adapter<PartidoAdap
 
         public PartidoViewHolder(View itemView){
             super (itemView);
-            context = itemView.getContext();
 
             layout = (RelativeLayout) itemView.findViewById(R.id.layoutPartidolist);
             jugador = (TextView) itemView.findViewById(R.id.jugadorPartidolist);

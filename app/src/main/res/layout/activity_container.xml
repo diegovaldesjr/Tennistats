@@ -7,22 +7,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.diegovaldesjr.tennistats.HomeActivity">
+    tools:context="com.diegovaldesjr.tennistats.view.ContainerActivity">
 
-    <include layout="@layout/actionbar_toolbar"/>
+    <include layout="@layout/tab_toolbar"/>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/partidoRecycler"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_below="@id/tabs"/>
+    </ScrollView>
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/menu_fab"

@@ -10,15 +10,25 @@ import java.util.Date;
 public class Partido implements Serializable {
 
     private int idPartido,idJugador;
-    private String jugador, categoria, fecha;
-    //private Date fecha;
+    private String jugador, categoria;
+    private Date fecha;
 
-    public Partido(int idPartido, int idJugador, String jugador, String fecha, String categoria) {
+    public Partido(int idPartido, int idJugador, String jugador, Date fecha, String categoria) {
         this.idPartido = idPartido;
         this.idJugador = idJugador;
         this.jugador = jugador;
         this.fecha = fecha;
         this.categoria = categoria;
+    }
+
+    public Partido(int idJugador, Date fecha, String categoria) {
+        this.idJugador = idJugador;
+        this.fecha = fecha;
+        this.categoria = categoria;
+    }
+
+    public Partido(){
+
     }
 
     public int getIdPartido() {
@@ -45,11 +55,11 @@ public class Partido implements Serializable {
         this.jugador = jugador;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

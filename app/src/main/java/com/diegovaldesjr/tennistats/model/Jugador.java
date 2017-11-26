@@ -8,15 +8,15 @@ import java.io.Serializable;
 
 public class Jugador implements Serializable {
     private int idJugador, edad;
-    private String nombre, apellido, categoria, mano;
+    private String nombre, apellido, manoDiestra, genero;
 
-    public Jugador(int idJugador, int edad, String nombre, String apellido, String categoria, String mano) {
+    public Jugador(int idJugador, int edad, String nombre, String apellido, String manoDiestra, String genero) {
         this.idJugador = idJugador;
         this.edad = edad;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.categoria = categoria;
-        this.mano = mano;
+        this.manoDiestra = manoDiestra;
+        this.genero = genero;
     }
 
     public Jugador(int idJugador, String nombre, String apellido) {
@@ -25,8 +25,12 @@ public class Jugador implements Serializable {
         this.apellido = apellido;
     }
 
-    public Jugador(){
-
+    public Jugador(int edad, String nombre, String apellido, String manoDiestra, String genero) {
+        this.edad = edad;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.manoDiestra = manoDiestra;
+        this.genero = genero;
     }
 
     public int getIdJugador() {
@@ -61,19 +65,11 @@ public class Jugador implements Serializable {
         this.apellido = apellido;
     }
 
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
     public String getMano() {
-        return mano;
+        return manoDiestra;
     }
 
     public void setMano(String mano) {
-        this.mano = mano;
+        this.manoDiestra = mano;
     }
 }
