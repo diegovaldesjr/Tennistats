@@ -47,12 +47,14 @@
                 android:value=".view.LoginActivity" />
             >
         </activity>
-        <activity android:name=".view.JugadorActivity"
+        <activity
+            android:name=".view.JugadorActivity"
             android:parentActivityName=".view.ContainerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.ContainerActivity" />
         </activity>
+        <activity android:name=".view.CanchaActivity"></activity>
     </application>
 
 </manifest>

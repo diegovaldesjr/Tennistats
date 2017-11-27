@@ -19,4 +19,5 @@
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="edittext_margin">10dp</dimen>
     <dimen name="tamano_playericon_grande">72dp</dimen>
+    <dimen name="height_cardView">72dp</dimen>
 </resources>

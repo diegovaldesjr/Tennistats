@@ -35,9 +35,9 @@ public class RegistrarJugadorActivity extends AppCompatActivity {
 
     public void registrarJugador(View view){
 
-        TextInputEditText nombre = (TextInputEditText) findViewById(R.id.nombreJugador);
-        TextInputEditText apellido = (TextInputEditText) findViewById(R.id.apellidoJugador);
-        TextInputEditText edad = (TextInputEditText) findViewById(R.id.edadJugador);
+        TextInputEditText nombre = (TextInputEditText) findViewById(R.id.nombreRegistrarJugador);
+        TextInputEditText apellido = (TextInputEditText) findViewById(R.id.apellidoRegistrarJugador);
+        TextInputEditText edad = (TextInputEditText) findViewById(R.id.edadRegistrarJugador);
 
         Spinner genero = (Spinner) findViewById(R.id.spinnerGeneroJugador);
         Spinner mano = (Spinner) findViewById(R.id.spinnerManoJugador);

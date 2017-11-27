@@ -13,7 +13,9 @@ import com.diegovaldesjr.tennistats.view.PartidoActivity;
 import com.diegovaldesjr.tennistats.R;
 import com.diegovaldesjr.tennistats.model.Partido;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by diego on 29/10/2017.
@@ -45,11 +47,23 @@ public class PartidoAdapterRecyclerView extends RecyclerView.Adapter<PartidoAdap
 
         holder.jugador.setText(partido.getJugador());
         holder.categoria.setText(partido.getCategoria());
-        holder.fecha.setText(partido.getFecha().toString());
 
-        holder.set1.setText(R.string.set_result_partidolist);
-        holder.set2.setText(R.string.set_result_partidolist);
-        holder.set3.setText(R.string.set_result_partidolist);
+        SimpleDateFormat parseador = new SimpleDateFormat("yyyy-MM-dd");
+        holder.fecha.setText(parseador.format(partido.getFecha()));
+
+        for(int i=0; i<partido.getSets().size(); i++){
+            switch (i){
+                case 0:
+                    holder.set1.setText(partido.getSets().get(i).getPuntajej()+"-"+partido.getSets().get(i).getPuntajeo());
+                    break;
+                case 1:
+                    holder.set2.setText(partido.getSets().get(i).getPuntajej()+"-"+partido.getSets().get(i).getPuntajeo());
+                    break;
+                case 2:
+                    holder.set3.setText(partido.getSets().get(i).getPuntajej()+"-"+partido.getSets().get(i).getPuntajeo());
+                    break;
+            }
+        }
 
         holder.layout.setOnClickListener(new View.OnClickListener(){
             @Override

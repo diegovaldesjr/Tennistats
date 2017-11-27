@@ -70,7 +70,8 @@ public class TabPartidos extends Fragment {
                                     Integer.parseInt(row.getJugador().getIdJugador()),
                                     row.getJugador().getNombre()+" "+row.getJugador().getApellido(),
                                     fecha,
-                                    row.getCategoria()
+                                    row.getCategoria(),
+                                    row.getSets()
                             ));
                         } catch (ParseException e) {
                             e.printStackTrace();

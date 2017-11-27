@@ -1,14 +1,18 @@
 package com.diegovaldesjr.tennistats.io.response;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * Created by diego on 25/11/2017.
  */
 
-public class PartidoResponse {
+public class PartidoResponse implements Serializable{
     String idPartido, fecha, descripcion, categoria, Usuario_idUsuario, Jugador_idJugador;
     JugadorResponse jugador;
+    ArrayList<SetResponse> sets;
 
-    public PartidoResponse(String idPartido, String fecha, String descripcion, String categoria, String usuario_idUsuario, String jugador_idJugador, JugadorResponse jugador) {
+    public PartidoResponse(String idPartido, String fecha, String descripcion, String categoria, String usuario_idUsuario, String jugador_idJugador, JugadorResponse jugador, ArrayList<SetResponse> sets) {
         this.idPartido = idPartido;
         this.fecha = fecha;
         this.descripcion = descripcion;
@@ -16,6 +20,15 @@ public class PartidoResponse {
         this.Usuario_idUsuario = usuario_idUsuario;
         this.Jugador_idJugador = jugador_idJugador;
         this.jugador = jugador;
+        this.sets = sets;
+    }
+
+    public ArrayList<SetResponse> getSets() {
+        return sets;
+    }
+
+    public void setSets(ArrayList<SetResponse> sets) {
+        this.sets = sets;
     }
 
     public String getIdPartido() {

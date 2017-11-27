@@ -1,6 +1,9 @@
 package com.diegovaldesjr.tennistats.model;
 
+import com.diegovaldesjr.tennistats.io.response.SetResponse;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -12,13 +15,23 @@ public class Partido implements Serializable {
     private int idPartido,idJugador;
     private String jugador, categoria;
     private Date fecha;
+    private ArrayList<SetResponse> sets;
 
-    public Partido(int idPartido, int idJugador, String jugador, Date fecha, String categoria) {
+    public Partido(int idPartido, int idJugador, String jugador, Date fecha, String categoria, ArrayList<SetResponse> sets) {
         this.idPartido = idPartido;
         this.idJugador = idJugador;
         this.jugador = jugador;
         this.fecha = fecha;
         this.categoria = categoria;
+        this.sets = sets;
+    }
+
+    public ArrayList<SetResponse> getSets() {
+        return sets;
+    }
+
+    public void setSets(ArrayList<SetResponse> sets) {
+        this.sets = sets;
     }
 
     public Partido(int idJugador, Date fecha, String categoria) {

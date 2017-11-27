@@ -25,7 +25,8 @@ public class TennisApiAdapter {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(logging);
 
-        String baseUrl = "http://25.41.117.103:8000/";
+        //String baseUrl = "http://25.41.117.103:8000/";
+        String baseUrl = "http://192.168.110.107:8000/";
 
         if (API_SERVICE == null) {
             Retrofit retrofit = new Retrofit.Builder()

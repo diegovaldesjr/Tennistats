@@ -1,6 +1,7 @@
 package com.diegovaldesjr.tennistats.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -85,7 +86,7 @@ public class CrearPartidoActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ArrayList<JugadorResponse>> call, Throwable t) {
-                Toast.makeText(CrearPartidoActivity.this, t.getMessage().toString(),
+                Toast.makeText(CrearPartidoActivity.this, t.getMessage(),
                         Toast.LENGTH_SHORT).show();
                 Log.d("Error", "Error Respuesta en JSON: " +t.getMessage());
             }
@@ -136,18 +137,26 @@ public class CrearPartidoActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<PartidoResponse> call, Response<PartidoResponse> response) {
                     if(response.isSuccessful()){
-                        finish();
+                        avanzarCancha(response.body());
+                        //finish();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<PartidoResponse> call, Throwable t) {
-                    Toast.makeText(CrearPartidoActivity.this, t.getMessage().toString(),
+                    Toast.makeText(CrearPartidoActivity.this, t.getMessage(),
                             Toast.LENGTH_SHORT).show();
                     Log.d("Error", "Error Respuesta en JSON: " +t.getMessage());
                 }
             });
         }
+    }
+
+    public void avanzarCancha(PartidoResponse partido){
+        Intent intent = new Intent(this, CanchaActivity.class);
+
+        intent.putExtra("partido", partido);
+        startActivity(intent);
     }
 
     public class PartidoBody{
