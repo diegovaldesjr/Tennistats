@@ -23,6 +23,7 @@
     <string name="hint_edad">Edad</string>
     <string name="hint_apellido">Apellido</string>
     <string name="text_button_agregar">Agregar</string>
+    <string name="spinnerSets">Sets</string>
 
     <string-array name="dropdown_genero">
         <item>Choose a Item</item>

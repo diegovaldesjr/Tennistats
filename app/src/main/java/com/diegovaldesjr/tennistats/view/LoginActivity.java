@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, t.getMessage().toString(),
+                Toast.makeText(LoginActivity.this, t.getMessage(),
                         Toast.LENGTH_SHORT).show();
                 Log.d("Error", "Error Respuesta en JSON: " +t.getMessage());
             }

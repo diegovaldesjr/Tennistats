@@ -64,7 +64,7 @@ public class RegistrarJugadorActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JugadorResponse> call, Throwable t) {
-                Toast.makeText(RegistrarJugadorActivity.this, t.getMessage().toString(),
+                Toast.makeText(RegistrarJugadorActivity.this, t.getMessage(),
                         Toast.LENGTH_SHORT).show();
                 Log.d("Error", "Error Respuesta en JSON: " +t.getMessage());
             }

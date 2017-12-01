@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.diegovaldesjr.tennistats.R;
@@ -47,6 +48,11 @@ public class CrearPartidoActivity extends AppCompatActivity {
         obtenerJugadores();
 
         showToolbar(getResources().getString(R.string.app_name), true);
+
+        TextView fecha = (TextView) findViewById(R.id.fechaGameConfig);
+
+        SimpleDateFormat parseador = new SimpleDateFormat("yyyy-MM-dd");
+        fecha.setText(parseador.format(new Date()));
     }
 
     public void showToolbar(String tittle, boolean upButton){

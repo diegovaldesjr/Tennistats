@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.AppBarLayout
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/AppTheme.AppBarOverlay"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/canchaToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+                    <Spinner
+                    android:id="@+id/spinnerSet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/primary_light"
+                    android:entries="@array/dropdown_sets"
+                    android:padding="@dimen/spinner_padding"/>
+
+                    <ImageView
+                        android:id="@+id/terminarPartido"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/icons8_close_window_50"
+                        android:clickable="true"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+
+                    <ImageView
+                        android:id="@+id/verDatos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/icons8_eye_50"
+                        android:clickable="true"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+</android.support.design.widget.AppBarLayout>

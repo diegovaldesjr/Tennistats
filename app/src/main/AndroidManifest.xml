@@ -20,28 +20,32 @@
         </activity>
         <activity
             android:name=".view.CrearPartidoActivity"
-            android:parentActivityName=".view.ContainerActivity">
+            android:parentActivityName=".view.ContainerActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.ContainerActivity" />
         </activity>
         <activity
             android:name=".view.PartidoActivity"
-            android:parentActivityName=".view.ContainerActivity">
+            android:parentActivityName=".view.ContainerActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.ContainerActivity" />
         </activity>
         <activity
             android:name=".view.RegistrarJugadorActivity"
-            android:parentActivityName=".view.ContainerActivity">
+            android:parentActivityName=".view.ContainerActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.ContainerActivity" />
         </activity>
         <activity
             android:name=".view.ContainerActivity"
-            android:parentActivityName=".view.LoginActivity">
+            android:parentActivityName=".view.LoginActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.LoginActivity" />
@@ -49,12 +53,19 @@
         </activity>
         <activity
             android:name=".view.JugadorActivity"
-            android:parentActivityName=".view.ContainerActivity">
+            android:parentActivityName=".view.ContainerActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.ContainerActivity" />
         </activity>
-        <activity android:name=".view.CanchaActivity"></activity>
+        <activity android:name=".view.CanchaActivity"
+            android:parentActivityName=".view.CrearPartidoActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.CrearPartidoActivity" />
+        </activity>
     </application>
 
 </manifest>

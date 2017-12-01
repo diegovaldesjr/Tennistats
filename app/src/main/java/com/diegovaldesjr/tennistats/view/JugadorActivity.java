@@ -107,7 +107,7 @@ public class JugadorActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JugadorResponse> call, Throwable t) {
-                Toast.makeText(JugadorActivity.this, t.getMessage().toString(),
+                Toast.makeText(JugadorActivity.this, t.getMessage(),
                         Toast.LENGTH_SHORT).show();
                 Log.d("Error", "Error Respuesta en JSON: " +t.getMessage());
             }

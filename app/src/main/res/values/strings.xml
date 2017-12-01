@@ -39,6 +39,13 @@
         <item>Sub-21</item>
     </string-array>
 
+    <string-array name="dropdown_sets">
+        <item>Elegir set</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <string name="title_activity_prueba">PruebaActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -47,4 +54,5 @@
     <string name="hint_edad">Edad</string>
     <string name="hint_apellido">Apellido</string>
     <string name="text_button_agregar">Agregar</string>
+    <string name="spinnerSets">Sets</string>
 </resources>
