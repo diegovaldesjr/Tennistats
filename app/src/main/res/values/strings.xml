@@ -55,4 +55,16 @@
     <string name="hint_apellido">Apellido</string>
     <string name="text_button_agregar">Agregar</string>
     <string name="spinnerSets">Sets</string>
+    <string name="title_activity_login2">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="error_invalid_user_id">Username invalido</string>
+    <string name="error_invalid_password">Contraseña demasiado corta</string>
+    <string name="error_incorrect_password">Contraseña invalida</string>
+    <string name="error_field_required">Este campo es requerido</string>
+    <string name="error_network">Error al conectar a la red</string>
+    <string name="text_button_registrar">Registrarse</string>
+    <string name="hint_username_registrar">Ingrese username</string>
+    <string name="hint_password_registrar">Ingrese contraseña</string>
+    <string name="registrar_usuario">Registrar usuario.</string>
 </resources>

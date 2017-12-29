@@ -24,6 +24,9 @@
     <string name="hint_apellido">Apellido</string>
     <string name="text_button_agregar">Agregar</string>
     <string name="spinnerSets">Sets</string>
+    <string name="text_button_registrar">Registrarse</string>
+    <string name="hint_username_registrar">Ingrese username</string>
+    <string name="registrar_usuario">Registrar usuario.</string>
 
     <string-array name="dropdown_genero">
         <item>Choose a Item</item>
