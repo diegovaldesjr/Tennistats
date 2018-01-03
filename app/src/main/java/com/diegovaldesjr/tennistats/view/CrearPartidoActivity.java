@@ -129,6 +129,7 @@ public class CrearPartidoActivity extends AppCompatActivity {
         );
 
         new AddPartidoTask().execute(partido);
+        //showCancha(partido);
     }
 
     public void showCancha(Partido partido){
@@ -142,7 +143,8 @@ public class CrearPartidoActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Partido... params) {
-            return db.savePartido(params[0]) > 0;
+            partido.setIdPartido(db.savePartido(params[0]));
+            return partido.getIdPartido() > 0;
         }
 
         @Override

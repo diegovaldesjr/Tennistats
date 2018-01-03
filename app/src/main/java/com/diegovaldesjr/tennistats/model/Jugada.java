@@ -9,14 +9,19 @@ import com.diegovaldesjr.tennistats.data.TennistatsContract;
  */
 
 public class Jugada {
-    int indice, idSet;
+    int indice, idSet, zona;
     String tipoGolpe, tipoJugada;
 
-    public Jugada(int indice, int idSet, String tipoGolpe, String tipoJugada) {
+    public Jugada(int indice, int idSet, int zona, String tipoGolpe, String tipoJugada) {
         this.indice = indice;
         this.idSet = idSet;
+        this.zona = zona;
         this.tipoGolpe = tipoGolpe;
         this.tipoJugada = tipoJugada;
+    }
+
+    public Jugada(){
+
     }
 
     public int getIndice() {
@@ -51,12 +56,21 @@ public class Jugada {
         this.tipoJugada = tipoJugada;
     }
 
+    public int getZona() {
+        return zona;
+    }
+
+    public void setZona(int zona) {
+        this.zona = zona;
+    }
+
     public ContentValues jugadaToContentValues() {
         ContentValues values = new ContentValues();
         values.put(TennistatsContract.JugadaEntry.INDICE, indice);
         values.put(TennistatsContract.JugadaEntry.ID_SET, idSet);
         values.put(TennistatsContract.JugadaEntry.TIPO_GOLPE, tipoGolpe);
         values.put(TennistatsContract.JugadaEntry.TIPO_JUGADA, tipoJugada);
+        values.put(TennistatsContract.JugadaEntry.ZONA, zona);
         return values;
     }
 }

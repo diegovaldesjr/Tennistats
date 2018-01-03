@@ -27,6 +27,9 @@
     <string name="text_button_registrar">Registrarse</string>
     <string name="hint_username_registrar">Ingrese username</string>
     <string name="registrar_usuario">Registrar usuario.</string>
+    <string name="text_set">Set:</string>
+    <string name="hint_puntajej">Puntaje jugador</string>
+    <string name="error_invalid_puntaje">Puntaje invalido.</string>
 
     <string-array name="dropdown_genero">
         <item>Choose a Item</item>

@@ -45,6 +45,7 @@ public class TennistatsContract {
         public static final String ID_SET = "idSet";
         public static final String TIPO_GOLPE = "tipoGolpe";
         public static final String TIPO_JUGADA = "tipoJugada";
+        public static final String ZONA = "zona";
     }
 
     public static abstract class SaqueEntry implements BaseColumns {
@@ -54,5 +55,6 @@ public class TennistatsContract {
         public static final String ID_SET = "idSet";
         public static final String TIPO_GOLPE = "tipoGolpe";
         public static final String TIPO_SAQUE = "tipoSaque";
+        public static final String ZONA = "zona";
     }
 }

@@ -1,46 +1,64 @@
 package com.diegovaldesjr.tennistats.view;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.diegovaldesjr.tennistats.R;
+import com.diegovaldesjr.tennistats.data.TennistatsDbHelper;
 import com.diegovaldesjr.tennistats.io.response.PartidoResponse;
 import com.diegovaldesjr.tennistats.model.Jugada;
 import com.diegovaldesjr.tennistats.model.Partido;
 import com.diegovaldesjr.tennistats.model.Saque;
+import com.diegovaldesjr.tennistats.model.Set;
 
 import java.util.ArrayList;
 
 public class CanchaActivity extends AppCompatActivity {
 
-    private int indice;
-    String selection;
-    ArrayList<Saque> saques;
-    ArrayList<Jugada> jugadas;
-    String jugada, golpe, zona;
-    private AlertDialog.Builder builder;
+    private TextView numeroSet;
+    private int indice, nSet;
+    private Set set;
+    private Saque saque;
+    private Jugada jugada;
+    private TennistatsDbHelper db;
+    private Partido partido;
+
+    private String selection;
+    private Boolean finalizar=false, avanzar=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cancha);
 
-        showToolbar(getResources().getString(R.string.app_name), true);
+        showToolbar(getResources().getString(R.string.app_name), false);
+        partido = (Partido) getIntent().getSerializableExtra("partido");
+        db = new TennistatsDbHelper(CanchaActivity.this);
 
-        builder = new AlertDialog.Builder(CanchaActivity.this);
+        numeroSet = (TextView) findViewById(R.id.numeroSet);
 
-        indice = 1;
-        saques = new ArrayList<>();
-        jugadas = new ArrayList<>();
-        jugada = golpe = "";
-        Partido partido = (Partido) getIntent().getSerializableExtra("partido");
+        indice = nSet = 1;
+        numeroSet.setText(String.valueOf(nSet));
+
+        saque = new Saque();
+        jugada = new Jugada();
+        set = new Set(partido.getIdPartido(), nSet, 0, 0, "");
+
+        new AddSetTask().execute(set);
 
         ImageView zona1 = (ImageView) findViewById(R.id.Zona1);
         ImageView zona2 = (ImageView) findViewById(R.id.Zona2);
@@ -53,56 +71,56 @@ public class CanchaActivity extends AppCompatActivity {
 
         zona1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                apuntarJugada("1");
+                seleccionarJugada(1);
             }
         });
 
         zona2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                apuntarJugada("2");
+                seleccionarJugada(2);
             }
         });
 
         zona3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                apuntarJugada("3");
+                seleccionarJugada(3);
             }
         });
 
         zona4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                apuntarJugada("4");
+                seleccionarJugada(4);
             }
         });
 
         zona5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                apuntarJugada("5");
+                seleccionarJugada(5);
             }
         });
 
         zona6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                apuntarJugada("6");
+                seleccionarJugada(6);
             }
         });
 
         zona7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                apuntarJugada("7");
+                seleccionarJugada(7);
             }
         });
 
         zona8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                apuntarJugada("8");
+                seleccionarJugada(8);
             }
         });
     }
@@ -137,6 +155,7 @@ public class CanchaActivity extends AppCompatActivity {
     }
 
     public void verDatos(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
         builder.setTitle("Datos")
                 .setMessage("Aqui van los datos")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -150,46 +169,61 @@ public class CanchaActivity extends AppCompatActivity {
     }
 
     public void terminarPartido(){
-        builder.setTitle("Datos")
-                .setMessage("Terminar")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
+        builder.setTitle("Terminar")
+                .setMessage("Desea terminar...")
+                .setPositiveButton("PARTIDO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                        finalizar = true;
+                        resultado();
                     }
                 })
-                .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                .setNeutralButton("CANCELAR", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 });
+        if(nSet < 3){
+            builder.setNegativeButton("SET", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    avanzar=true;
+                    resultado();
+                }
+            });
+        }
 
         builder.create().show();
     }
 
-    public void apuntarJugada(String zona){
-        final CharSequence[] items = new CharSequence[2];
+    public void resultado(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
+        LayoutInflater inflater = this.getLayoutInflater();
 
-        this.zona = "zona "+zona;
-        items[0] = "Saque";
-        items[1] = "Jugada";
+        final View v = inflater.inflate(R.layout.dialog_terminar_set, null);
 
-        builder.setTitle("Saque o Jugada")
-                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(CanchaActivity.this, items[which], Toast.LENGTH_SHORT).show();
-                        selection = items[which].toString();
-                    }
-                })
+        builder.setView(v)
+                .setTitle("Resultado")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(selection.equals("Saque")){
-                            tipoSaque();
-                        }else if(selection.equals("Jugada")){
-                            tipoGolpe();
+                        EditText puntajejEditText = (EditText) v.findViewById(R.id.puntajej);
+                        EditText puntajeoEditText = (EditText) v.findViewById(R.id.puntajeo);
+                        Spinner ganadorSpinner = (Spinner) v.findViewById(R.id.spinnerGanador);
+
+                        if(validarPuntaje(puntajejEditText.getText().toString()) && validarPuntaje(puntajeoEditText.getText().toString())){
+                            set.setPuntajej(Integer.parseInt(puntajejEditText.getText().toString()));
+                            set.setPuntajeo(Integer.parseInt(puntajeoEditText.getText().toString()));
+                            set.setGanador(ganadorSpinner.getSelectedItem().toString());
+
+                            //Actualizar set en BD
+                            new AddSetTask().execute(set);
+                            //Creo set siguiente
+                        }else {
+                            showMessage(getString(R.string.error_invalid_puntaje));
+                            dialog.cancel();
                         }
                     }
                 })
@@ -203,7 +237,61 @@ public class CanchaActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    public void tipoGolpe(){
+    public Boolean validarPuntaje(String puntaje){
+
+        if (TextUtils.isEmpty(puntaje)) {
+            showMessage(getString(R.string.error_invalid_puntaje));
+            return false;
+        }
+        switch (puntaje){
+            case "0": return true;
+            case "15": return true;
+            case "30": return true;
+            case "40": return true;
+            case "45": return true;
+        }
+
+        return false;
+    }
+
+    public void seleccionarJugada(final int zona){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
+        final CharSequence[] items = new CharSequence[2];
+
+        items[0] = "Saque";
+        items[1] = "Jugada";
+
+        builder.setTitle("Saque o Jugada")
+                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        selection = items[which].toString();
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(selection.equals("Saque")){
+                            saque.setZona(zona);
+                            saqueTipoSaque();
+                        }else if(selection.equals("Jugada")){
+                            jugada.setZona(zona);
+                            jugadaTipoGolpe();
+                        }
+                    }
+                })
+                .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        builder.create().show();
+    }
+
+    public void jugadaTipoGolpe(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
         final CharSequence[] items = new CharSequence[5];
 
         items[0] = "Normal";
@@ -212,18 +300,17 @@ public class CanchaActivity extends AppCompatActivity {
         items[3] = "Paralelo";
         items[4] = "Angulado";
 
-        builder.setTitle("Tipo de golpe")
+        builder.setTitle("Jugada, seleccion tipo de golpe")
                 .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(CanchaActivity.this, items[which], Toast.LENGTH_SHORT).show();
-                        golpe = items[which].toString();
+                        jugada.setTipoGolpe(items[which].toString());
                     }
                 })
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        tipoJugada();
+                        jugadaTipoJugada();
                     }
                 })
                 .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
@@ -236,7 +323,8 @@ public class CanchaActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    public void tipoJugada(){
+    public void jugadaTipoJugada(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
         final CharSequence[] items = new CharSequence[4];
 
         items[0] = "Out";
@@ -244,22 +332,20 @@ public class CanchaActivity extends AppCompatActivity {
         items[2] = "Error Forzado";
         items[3] = "Error no forzado";
 
-        final Spinner set = (Spinner) findViewById(R.id.spinnerSet);
-
-        builder.setTitle("Tipo de jugada")
+        builder.setTitle("Golpe:"+jugada.getTipoGolpe()+", seleccion tipo de jugada")
                 .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(CanchaActivity.this, items[which], Toast.LENGTH_SHORT).show();
-                        jugada = items[which].toString();
+                        jugada.setTipoJugada(items[which].toString());
                     }
                 })
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //jugadas.add(new Jugada(golpe, jugada));
-                        Toast.makeText(CanchaActivity.this, "set:"+set.getSelectedItem().toString()+"\n"+golpe+", "+jugada+"\nJugada numero:"+indice+"\n"+zona, Toast.LENGTH_SHORT).show();
-                        indice++;
+                        jugada.setIdSet(set.getIdSet());
+                        jugada.setIndice(indice++);
+                        new AddJugadaTask().execute(jugada);
+                        //showMessage("golpe:"+jugada.getTipoGolpe()+", saque"+jugada.getTipoJugada()+"\nJugada numero:"+saque.getIndice()+"\n Zona:"+saque.getZona());
                         dialog.cancel();
                     }
                 })
@@ -273,24 +359,24 @@ public class CanchaActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    public void tipoSaque(){
+    public void saqueTipoSaque(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
         final CharSequence[] items = new CharSequence[2];
 
         items[0] = "Primer saque";
         items[1] = "Segundo saque";
 
-        builder.setTitle("Tipo de saque")
+        builder.setTitle("Saque, seleccione tipo de saque")
                 .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(CanchaActivity.this, items[which], Toast.LENGTH_SHORT).show();
-                        jugada = items[which].toString();
+                        saque.setTipoSaque(items[which].toString());
                     }
                 })
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        tipoSaqueGolpe();
+                        saqueTipoGolpe();
                     }
                 })
                 .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
@@ -303,28 +389,27 @@ public class CanchaActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    public void tipoSaqueGolpe(){
+    public void saqueTipoGolpe(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
         final CharSequence[] items = new CharSequence[2];
 
         items[0] = "Ace";
         items[1] = "Falta";
 
-        final Spinner set = (Spinner) findViewById(R.id.spinnerSet);
-
-        builder.setTitle("Tipo de golpe")
+        builder.setTitle(saque.getTipoSaque()+", seleccione tipo de golpe")
                 .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(CanchaActivity.this, items[which], Toast.LENGTH_SHORT).show();
-                        golpe = items[which].toString();
+                        saque.setTipoGolpe(items[which].toString());
                     }
                 })
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //saques.add(new Saque(jugada, golpe));
-                        Toast.makeText(CanchaActivity.this, "set:"+set.getSelectedItem().toString()+"\n"+golpe+", "+jugada+"\nJugada numero:"+indice+"\n"+zona, Toast.LENGTH_SHORT).show();
-                        indice++;
+                        saque.setIdSet(set.getIdSet());
+                        saque.setIndice(indice++);
+                        new AddSaqueTask().execute(saque);
+                        //showMessage("golpe:"+saque.getTipoGolpe()+", saque"+saque.getTipoSaque()+"\nJugada numero:"+saque.getIndice()+"\n Zona:"+saque.getZona());
                         dialog.cancel();
                     }
                 })
@@ -342,11 +427,77 @@ public class CanchaActivity extends AppCompatActivity {
         Toast.makeText(CanchaActivity.this, error, Toast.LENGTH_LONG).show();
     }
 
-    public int getIndice() {
-        return indice;
+    private void showHome() {
+        startActivity(new Intent(this, ContainerActivity.class));
+        finish();
     }
 
-    public void setIndice(int indice) {
-        this.indice = indice;
+    private class AddSetTask extends AsyncTask<Set, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Set... params) {
+            if(set.getIdSet() != 0){
+                return db.updateSet(params[0], String.valueOf(set.getIdSet())) > 0;
+            }else{
+                set.setIdSet(db.saveSet(params[0]));
+                return set.getIdSet() > 0;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                showMessage("Set agregado.");
+                if(finalizar){
+                    showHome();
+                }else if(avanzar){
+                    nSet++;
+                    set = new Set(partido.getIdPartido(), nSet, 0, 0, "");
+                    avanzar=false;
+                    new AddSetTask().execute(set);
+                    numeroSet.setText(String.valueOf(nSet));
+                }
+
+            } else {
+                showMessage("Error al crear set.");
+            }
+        }
+
+    }
+
+    private class AddSaqueTask extends AsyncTask<Saque, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Saque... params) {
+            return db.saveSaque(params[0]) > 0;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                showMessage("Saque agregado.");
+            } else {
+                showMessage("Error al registrar saque.");
+            }
+        }
+
+    }
+
+    private class AddJugadaTask extends AsyncTask<Jugada, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Jugada... params) {
+            return db.saveJugada(params[0]) > 0;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                showMessage("Jugada agregada.");
+            } else {
+                showMessage("Error al registrar jugada.");
+            }
+        }
+
     }
 }

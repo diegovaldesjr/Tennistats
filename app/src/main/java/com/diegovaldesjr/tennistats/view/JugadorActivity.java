@@ -18,6 +18,7 @@ import com.diegovaldesjr.tennistats.data.TennistatsContract;
 import com.diegovaldesjr.tennistats.data.TennistatsDbHelper;
 import com.diegovaldesjr.tennistats.model.Jugador;
 import com.diegovaldesjr.tennistats.model.Partido;
+import com.diegovaldesjr.tennistats.model.Set;
 
 import java.util.ArrayList;
 
@@ -93,39 +94,47 @@ public class JugadorActivity extends AppCompatActivity {
     public void formatearData(){
         ArrayList<Partido> partidos = new ArrayList<>();
 
-        while (c.moveToNext()){
-            Partido partido = new Partido(
-                    c.getInt(c.getColumnIndex(TennistatsContract.PartidoEntry._ID)),
-                    c.getInt(c.getColumnIndex(TennistatsContract.PartidoEntry.ID_JUGADOR)),
-                    c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.FECHA)),
-                    c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.CATEGORIA)),
-                    c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.ID_USUARIO)),
-                    null,
-                    new Jugador(
-                            c.getInt(c.getColumnIndex(TennistatsContract.PartidoEntry.ID_JUGADOR)),
-                            c.getString(c.getColumnIndex(TennistatsContract.JugadorEntry.NOMBRE)),
-                            c.getString(c.getColumnIndex(TennistatsContract.JugadorEntry.APELLIDO))
-                    )
-            );
-            /*
-            ArrayList<Set> sets = new ArrayList<>();
+        if(c != null){
+            for(int i=0; i<c.getCount(); i++){
+                c.moveToPosition(i);
 
-            while(partido.getIdPartido() == c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.ID_PARTIDO))){
-                sets.add(new Set(
-                        c.getInt(c.getColumnIndex(TennistatsContract.SetEntry._ID)),
-                        c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.ID_PARTIDO)),
-                        c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.NUMERO)),
-                        c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.PUNTAJEJ)),
-                        c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.PUNTAJEO)),
-                        c.getString(c.getColumnIndex(TennistatsContract.SetEntry.GANADOR))
-                ));
+                Partido partido = new Partido(
+                        c.getInt(0),
+                        c.getInt(c.getColumnIndex(TennistatsContract.PartidoEntry.ID_JUGADOR)),
+                        c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.FECHA)),
+                        c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.CATEGORIA)),
+                        c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.ID_USUARIO)),
+                        null,
+                        new Jugador(
+                                c.getInt(c.getColumnIndex(TennistatsContract.PartidoEntry.ID_JUGADOR)),
+                                c.getString(c.getColumnIndex(TennistatsContract.JugadorEntry.NOMBRE)),
+                                c.getString(c.getColumnIndex(TennistatsContract.JugadorEntry.APELLIDO))
+                        )
+                );
+
+
+                ArrayList<Set> sets = new ArrayList<>();
+
+                for(int j=i; partido.getIdPartido() == c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.ID_PARTIDO)) && j<c.getCount(); ){
+
+                    sets.add(new Set(
+                            //7
+                            c.getInt(7),
+                            c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.ID_PARTIDO)),
+                            c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.NUMERO)),
+                            c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.PUNTAJEJ)),
+                            c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.PUNTAJEO)),
+                            c.getString(c.getColumnIndex(TennistatsContract.SetEntry.GANADOR))
+                    ));
+                    i=j++;
+                    if(j<c.getCount())
+                        c.moveToPosition(j);
+                }
+                partido.setSets(sets);
+                partidos.add(partido);
             }
-
-            partido.setSets(sets);*/
-            partidos.add(partido);
+            actualizarRecyclerView(partidos);
         }
-
-        actualizarRecyclerView(partidos);
     }
 
     private void showError(String error) {

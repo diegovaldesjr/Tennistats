@@ -4,17 +4,27 @@ import android.content.ContentValues;
 
 import com.diegovaldesjr.tennistats.data.TennistatsContract;
 
+import java.io.Serializable;
+
 /**
  * Created by diego on 30/12/2017.
  */
 
-public class Set {
+public class Set implements Serializable {
 
     int idSet, idPartido, numero, puntajej, puntajeo;
     String  ganador;
 
     public Set(int idSet, int idPartido, int numero, int puntajej, int puntajeo, String ganador) {
         this.idSet = idSet;
+        this.idPartido = idPartido;
+        this.numero = numero;
+        this.puntajej = puntajej;
+        this.puntajeo = puntajeo;
+        this.ganador = ganador;
+    }
+
+    public Set(int idPartido, int numero, int puntajej, int puntajeo, String ganador) {
         this.idPartido = idPartido;
         this.numero = numero;
         this.puntajej = puntajej;

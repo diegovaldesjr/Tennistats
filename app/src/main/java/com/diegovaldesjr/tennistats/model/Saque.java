@@ -9,14 +9,19 @@ import com.diegovaldesjr.tennistats.data.TennistatsContract;
  */
 
 public class Saque {
-    int indice, idSet;
+    int indice, idSet, zona;
     String tipoSaque, tipoGolpe;
 
-    public Saque(int indice, int idSet, String tipoSaque, String tipoGolpe) {
+    public Saque(int indice, int idSet, int zona, String tipoSaque, String tipoGolpe) {
         this.indice = indice;
         this.idSet = idSet;
+        this.zona = zona;
         this.tipoSaque = tipoSaque;
         this.tipoGolpe = tipoGolpe;
+    }
+
+    public Saque(){
+
     }
 
     public String getTipoSaque() {
@@ -51,12 +56,21 @@ public class Saque {
         this.idSet = idSet;
     }
 
+    public int getZona() {
+        return zona;
+    }
+
+    public void setZona(int zona) {
+        this.zona = zona;
+    }
+
     public ContentValues saqueToContentValues() {
         ContentValues values = new ContentValues();
         values.put(TennistatsContract.SaqueEntry.INDICE, indice);
         values.put(TennistatsContract.SaqueEntry.ID_SET, idSet);
         values.put(TennistatsContract.SaqueEntry.TIPO_GOLPE, tipoGolpe);
         values.put(TennistatsContract.SaqueEntry.TIPO_SAQUE, tipoSaque);
+        values.put(TennistatsContract.SaqueEntry.ZONA, zona);
         return values;
     }
 

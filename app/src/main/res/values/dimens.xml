@@ -21,4 +21,6 @@
     <dimen name="tamano_playericon_grande">72dp</dimen>
     <dimen name="height_cardView">68dp</dimen>
     <dimen name="margintop_registrar">32dp</dimen>
+    <dimen name="text_sets">18sp</dimen>
+    <dimen name="dialog_padding">12dp</dimen>
 </resources>

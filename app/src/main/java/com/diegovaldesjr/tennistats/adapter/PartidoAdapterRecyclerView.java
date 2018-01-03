@@ -53,19 +53,19 @@ public class PartidoAdapterRecyclerView extends RecyclerView.Adapter<PartidoAdap
         //holder.fecha.setText(parseador.format(partido.getFecha()));
         holder.fecha.setText(partido.getFecha());
 
-        /*for(int i=0; i<partido.getSets().size(); i++){
+        for(int i=0; i<partido.getSets().size(); i++){
             switch (i){
                 case 0:
-                    holder.set1.setText(partido.getSets().get(i).getPuntajej()+"-"+partido.getSets().get(i).getPuntajeo());
+                    holder.set1.setText(String.valueOf(partido.getSets().get(i).getPuntajej())+"-"+String.valueOf(partido.getSets().get(i).getPuntajeo()));
                     break;
                 case 1:
-                    holder.set2.setText(partido.getSets().get(i).getPuntajej()+"-"+partido.getSets().get(i).getPuntajeo());
+                    holder.set2.setText(String.valueOf(partido.getSets().get(i).getPuntajej())+"-"+String.valueOf(partido.getSets().get(i).getPuntajeo()));
                     break;
                 case 2:
-                    holder.set3.setText(partido.getSets().get(i).getPuntajej()+"-"+partido.getSets().get(i).getPuntajeo());
+                    holder.set3.setText(String.valueOf(partido.getSets().get(i).getPuntajej())+"-"+String.valueOf(partido.getSets().get(i).getPuntajeo()));
                     break;
             }
-        }*/
+        }
 
         holder.layout.setOnClickListener(new View.OnClickListener(){
             @Override

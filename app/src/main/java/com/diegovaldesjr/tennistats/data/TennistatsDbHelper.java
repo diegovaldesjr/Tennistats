@@ -56,6 +56,7 @@ public class TennistatsDbHelper extends SQLiteOpenHelper {
                 + TennistatsContract.JugadaEntry.ID_SET + " INTEGER NOT NULL,"
                 + TennistatsContract.JugadaEntry.INDICE + " INTEGER NOT NULL,"
                 + TennistatsContract.JugadaEntry.TIPO_GOLPE + " TEXT NOT NULL,"
+                + TennistatsContract.JugadaEntry.ZONA + " INTEGER NOT NULL,"
                 + TennistatsContract.JugadaEntry.TIPO_JUGADA + " TEXT NOT NULL)");
 
         db.execSQL("CREATE TABLE " + TennistatsContract.SaqueEntry.TABLE_NAME + " ("
@@ -63,6 +64,7 @@ public class TennistatsDbHelper extends SQLiteOpenHelper {
                 + TennistatsContract.SaqueEntry.ID_SET + " INTEGER NOT NULL,"
                 + TennistatsContract.SaqueEntry.INDICE + " INTEGER NOT NULL,"
                 + TennistatsContract.SaqueEntry.TIPO_GOLPE + " TEXT NOT NULL,"
+                + TennistatsContract.SaqueEntry.ZONA + " INTEGER NOT NULL,"
                 + TennistatsContract.SaqueEntry.TIPO_SAQUE + " TEXT NOT NULL)");
     }
 
@@ -81,20 +83,20 @@ public class TennistatsDbHelper extends SQLiteOpenHelper {
 
     }
 
-    public long savePartido(Partido partido) {
+    public int savePartido(Partido partido) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
-        return sqLiteDatabase.insert(
+        return (int) sqLiteDatabase.insert(
                 TennistatsContract.PartidoEntry.TABLE_NAME,
                 null,
                 partido.partidoToContentValues());
 
     }
 
-    public long saveSet(Set set) {
+    public int saveSet(Set set) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
-        return sqLiteDatabase.insert(
+        return (int) sqLiteDatabase.insert(
                 TennistatsContract.SetEntry.TABLE_NAME,
                 null,
                 set.setToContentValues());
@@ -162,10 +164,20 @@ public class TennistatsDbHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getPartidosPorJugador(String id) {
-        String query = "SELECT partido.*, jugador.nombre, jugador.apellido FROM partido INNER JOIN jugador " +
-                "ON partido.idJugador = jugador." + TennistatsContract.JugadorEntry._ID + " AND jugador."+
-                TennistatsContract.JugadorEntry._ID+" = "+id;
+        String query = "SELECT partido.*, jugador.nombre, jugador.apellido, sets.* FROM ((partido INNER JOIN jugador " +
+                "ON partido.idJugador = jugador."+TennistatsContract.JugadorEntry._ID+" AND jugador."+
+                TennistatsContract.JugadorEntry._ID +" = "+id+") " + "INNER JOIN sets ON partido."+
+                TennistatsContract.PartidoEntry._ID+" = sets.idPartido)";
 
         return getReadableDatabase().rawQuery(query, null);
+    }
+
+    public int updateSet(Set set, String id) {
+        return getWritableDatabase().update(
+                TennistatsContract.SetEntry.TABLE_NAME,
+                set.setToContentValues(),
+                TennistatsContract.SetEntry._ID + " LIKE ?",
+                new String[]{id}
+        );
     }
 }

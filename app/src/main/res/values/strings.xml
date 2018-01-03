@@ -42,6 +42,11 @@
         <item>3</item>
     </string-array>
 
+    <string-array name="dropdown_ganador">
+        <item>Jugador</item>
+        <item>Oponente</item>
+    </string-array>
+
     <string name="title_activity_prueba">PruebaActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -67,4 +72,8 @@
     <string name="error_invalid_edad">Edad invalida</string>
     <string name="error_invalid_genero">Genero invalido</string>
     <string name="error_invalid_mano">Mano invalida</string>
+    <string name="text_set">Set:</string>
+    <string name="hint_puntajej">Puntaje jugador</string>
+    <string name="hint_puntajeo">Puntaje oponente</string>
+    <string name="error_invalid_puntaje">Puntaje invalido.</string>
 </resources>
