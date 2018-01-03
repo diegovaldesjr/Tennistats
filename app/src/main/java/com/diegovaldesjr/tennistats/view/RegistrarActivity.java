@@ -74,19 +74,17 @@ public class RegistrarActivity extends AppCompatActivity {
         mFloatLabelUserId.setError(null);
         mFloatLabelPassword.setError(null);
 
-        // Store values at the time of the login attempt.
         String username = this.username.getText().toString();
         String password = this.contraseña.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
             showRegistrarError(getString(R.string.error_field_required));
             focusView = mFloatLabelPassword;
             cancel = true;
-        }else if(!isPasswordValid(password)){
+        }else if(!isValid(password)){
             showRegistrarError(getString(R.string.error_invalid_password));
             focusView = mFloatLabelPassword;
             cancel = true;
@@ -97,19 +95,15 @@ public class RegistrarActivity extends AppCompatActivity {
             showRegistrarError(getString(R.string.error_field_required));
             focusView = mFloatLabelUserId;
             cancel = true;
-        } else if (!isUsernameValid(username)) {
+        } else if (!isValid(username)) {
             showRegistrarError(getString(R.string.error_invalid_user_id));
             focusView = mFloatLabelUserId;
             cancel = true;
         }
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             showProgress(true);
 
             Call<RegistrarResponse> call = TennisApiAdapter.getApiService().registrar(new LoginBody(
@@ -124,6 +118,7 @@ public class RegistrarActivity extends AppCompatActivity {
                     showProgress(false);
 
                     if(response.isSuccessful()){
+                        showRegistrarError("Registro exitoso.");
                         showLogin();
                     }
                 }
@@ -139,14 +134,8 @@ public class RegistrarActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isUsernameValid(String username) {
-        //TODO: Replace this with your own logic
+    private boolean isValid(String username) {
         return username.length() > 0;
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 0;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)

@@ -96,35 +96,29 @@ public class LoginActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
             showLoginError(getString(R.string.error_field_required));
             focusView = mFloatLabelPassword;
             cancel = true;
-        }else if(!isPasswordValid(password)){
+        }else if(!iValid(password)){
             showLoginError(getString(R.string.error_invalid_password));
             focusView = mFloatLabelPassword;
             cancel = true;
         }
 
-        // Check for a valid username.
         if (TextUtils.isEmpty(username)) {
             showLoginError(getString(R.string.error_field_required));
             focusView = mFloatLabelUserId;
             cancel = true;
-        } else if (!isUsernameValid(username)) {
+        } else if (!iValid(username)) {
             showLoginError(getString(R.string.error_invalid_user_id));
             focusView = mFloatLabelUserId;
             cancel = true;
         }
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             showProgress(true);
 
             Call<LoginResponse> call = TennisApiAdapter.getApiService().getLogin(new LoginBody(
@@ -157,14 +151,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isUsernameValid(String username) {
-        //TODO: Replace this with your own logic
-        return username.length() > 0;
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 0;
+    private boolean iValid(String string) {
+        return string.length() > 0;
     }
 
     /**

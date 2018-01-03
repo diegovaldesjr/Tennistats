@@ -47,7 +47,7 @@
                 android:value=".view.ContainerActivity" />
         </activity>
         <activity
-            android:name=".view.RegistrarJugadorActivity"
+            android:name=".view.CrearJugadorActivity"
             android:parentActivityName=".view.ContainerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -2,6 +2,7 @@ package com.diegovaldesjr.tennistats.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.diegovaldesjr.tennistats.data.TennistatsContract;
 import com.diegovaldesjr.tennistats.view.PartidoActivity;
 import com.diegovaldesjr.tennistats.R;
 import com.diegovaldesjr.tennistats.model.Partido;
@@ -23,9 +25,9 @@ import java.util.Date;
 
 public class PartidoAdapterRecyclerView extends RecyclerView.Adapter<PartidoAdapterRecyclerView.PartidoViewHolder> {
 
-    private ArrayList<Partido> partidos;
     private int resource;
     private Activity activity;
+    private ArrayList<Partido> partidos;
 
     public PartidoAdapterRecyclerView(ArrayList<Partido> partidos, int resource, Activity activity) {
         this.partidos = partidos;
@@ -42,16 +44,16 @@ public class PartidoAdapterRecyclerView extends RecyclerView.Adapter<PartidoAdap
 
     @Override
     public void onBindViewHolder(PartidoAdapterRecyclerView.PartidoViewHolder holder, int position) {
-
         final Partido partido = partidos.get(position);
 
-        holder.jugador.setText(partido.getJugador());
+        holder.jugador.setText(partido.getJugador().getNombre()+" "+partido.getJugador().getApellido());
         holder.categoria.setText(partido.getCategoria());
 
-        SimpleDateFormat parseador = new SimpleDateFormat("yyyy-MM-dd");
-        holder.fecha.setText(parseador.format(partido.getFecha()));
+        //SimpleDateFormat parseador = new SimpleDateFormat("yyyy-MM-dd");
+        //holder.fecha.setText(parseador.format(partido.getFecha()));
+        holder.fecha.setText(partido.getFecha());
 
-        for(int i=0; i<partido.getSets().size(); i++){
+        /*for(int i=0; i<partido.getSets().size(); i++){
             switch (i){
                 case 0:
                     holder.set1.setText(partido.getSets().get(i).getPuntajej()+"-"+partido.getSets().get(i).getPuntajeo());
@@ -63,7 +65,7 @@ public class PartidoAdapterRecyclerView extends RecyclerView.Adapter<PartidoAdap
                     holder.set3.setText(partido.getSets().get(i).getPuntajej()+"-"+partido.getSets().get(i).getPuntajeo());
                     break;
             }
-        }
+        }*/
 
         holder.layout.setOnClickListener(new View.OnClickListener(){
             @Override

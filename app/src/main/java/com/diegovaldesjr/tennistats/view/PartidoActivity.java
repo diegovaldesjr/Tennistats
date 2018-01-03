@@ -27,7 +27,7 @@ public class PartidoActivity extends AppCompatActivity {
 
         Partido partido = (Partido) getIntent().getSerializableExtra("partido");
 
-        jugador.setText(partido.getJugador());
+        jugador.setText(partido.getJugador().getNombre()+" "+partido.getJugador().getApellido());
         fecha.setText(partido.getFecha().toString());
         categoria.setText(partido.getCategoria());
     }

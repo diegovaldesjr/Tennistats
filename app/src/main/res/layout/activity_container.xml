@@ -88,8 +88,7 @@
             android:layout_height="wrap_content"
             fab:fab_colorNormal="?attr/colorAccent"
             fab:fab_icon="@drawable/icons8_stadium__white"
-            fab:fab_size="mini"
-            android:onClick="crearPartidoIntent"/>
+            fab:fab_size="mini"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/accion_crearjugador"
@@ -97,8 +96,7 @@
             android:layout_height="wrap_content"
             fab:fab_colorNormal="?attr/colorAccent"
             fab:fab_icon="@drawable/icons8_tennis_player_white"
-            fab:fab_size="mini"
-            android:onClick="crearJugadorIntent"/>
+            fab:fab_size="mini"/>
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

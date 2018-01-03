@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.diegovaldesjr.tennistats.view.RegistrarJugadorActivity">
+    tools:context="com.diegovaldesjr.tennistats.view.CrearJugadorActivity">
 
     <include layout="@layout/actionbar_toolbar"/>
 
@@ -29,41 +29,50 @@
                 android:layout_gravity="center"/>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/float_label_nombre_jugador"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/edittext_margin">
 
-                <android.support.design.widget.TextInputEditText
+                <EditText
                     android:id="@+id/nombreRegistrarJugador"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_nombre"/>
+                    android:hint="@string/hint_nombre"
+                    android:inputType="text"
+                    android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/float_label_apellido_jugador"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/edittext_margin">
 
-                <android.support.design.widget.TextInputEditText
+                <EditText
                     android:id="@+id/apellidoRegistrarJugador"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_apellido"/>
+                    android:hint="@string/hint_apellido"
+                    android:inputType="text"
+                    android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/float_label_edad_jugador"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/edittext_margin">
 
-                <android.support.design.widget.TextInputEditText
+                <EditText
                     android:id="@+id/edadRegistrarJugador"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_edad"/>
+                    android:hint="@string/hint_edad"
+                    android:inputType="number"
+                    android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
 

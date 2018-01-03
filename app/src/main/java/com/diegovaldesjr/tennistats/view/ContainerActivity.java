@@ -10,13 +10,16 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.diegovaldesjr.tennistats.R;
 import com.diegovaldesjr.tennistats.adapter.PagerAdapter;
 import com.diegovaldesjr.tennistats.data.SessionPrefs;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 public class ContainerActivity extends AppCompatActivity {
+
+    private FloatingActionButton crearJugador;
+    private FloatingActionButton crearPartido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,23 @@ public class ContainerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_container);
 
         showToolbar(getResources().getString(R.string.app_name), false);
+
+        crearJugador = (FloatingActionButton) findViewById(R.id.accion_crearjugador);
+        crearPartido = (FloatingActionButton) findViewById(R.id.accion_crearpartido);
+
+        crearJugador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCrearJugador();
+            }
+        });
+
+        crearPartido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCrearPartido();
+            }
+        });
     }
 
     public void showToolbar(String tittle, boolean upButton){
@@ -48,7 +68,7 @@ public class ContainerActivity extends AppCompatActivity {
 
         //Viewpager
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        PagerAdapter adapter = new PagerAdapter
+        final PagerAdapter adapter = new PagerAdapter
                 (getSupportFragmentManager(), tabs.getTabCount());
 
         viewPager.setAdapter(adapter);
@@ -57,6 +77,7 @@ public class ContainerActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                adapter.actualizar();
             }
 
             @Override
@@ -66,7 +87,7 @@ public class ContainerActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                adapter.actualizar();
             }
         });
 
@@ -117,13 +138,13 @@ public class ContainerActivity extends AppCompatActivity {
         finish();
     }
 
-    public void crearJugadorIntent(View view){
-        Intent intent = new Intent(this, RegistrarJugadorActivity.class);
+    public void showCrearJugador(){
+        Intent intent = new Intent(this, CrearJugadorActivity.class);
         startActivity(intent);
     }
 
-    public void cerraSesion(){
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
+    public void showCrearPartido(){
+        Intent intent = new Intent(this, CrearPartidoActivity.class);
+        startActivity(intent);
     }
 }

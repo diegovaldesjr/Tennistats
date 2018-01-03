@@ -1,58 +1,63 @@
 package com.diegovaldesjr.tennistats.view;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.diegovaldesjr.tennistats.R;
-import com.diegovaldesjr.tennistats.io.TennisApiAdapter;
-import com.diegovaldesjr.tennistats.io.response.JugadorResponse;
-import com.diegovaldesjr.tennistats.io.response.PartidoResponse;
-import com.diegovaldesjr.tennistats.model.Jugador;
+import com.diegovaldesjr.tennistats.data.SessionPrefs;
+import com.diegovaldesjr.tennistats.data.TennistatsContract;
+import com.diegovaldesjr.tennistats.data.TennistatsDbHelper;
+import com.diegovaldesjr.tennistats.model.Partido;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class CrearPartidoActivity extends AppCompatActivity {
 
-    SharedPreferences user;
+    private Spinner spinnerJugador;
 
-    Spinner spinnerJugador;
-
-    ArrayList<Jugador> jugadores;
+    private TennistatsDbHelper db;
+    private Cursor c;
+    private String fechaS;
+    private Partido partido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_partido);
 
-        user = getSharedPreferences("user", Context.MODE_PRIVATE);
+        showToolbar(getResources().getString(R.string.app_name), true);
+        db = new TennistatsDbHelper(CrearPartidoActivity.this);
 
         spinnerJugador = (Spinner) findViewById(R.id.spinnerJugadorGameconfig);
-        jugadores = new ArrayList<>();
-        obtenerJugadores();
-
-        showToolbar(getResources().getString(R.string.app_name), true);
 
         TextView fecha = (TextView) findViewById(R.id.fechaGameConfig);
 
         SimpleDateFormat parseador = new SimpleDateFormat("yyyy-MM-dd");
-        fecha.setText(parseador.format(new Date()));
+        fechaS = parseador.format(new Date());
+        fecha.setText(fechaS);
+
+        Button button = (Button) findViewById(R.id.empezarPartido);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                empezarPartido();
+            }
+        });
+
+        loadJugadores();
     }
 
     public void showToolbar(String tittle, boolean upButton){
@@ -68,44 +73,12 @@ public class CrearPartidoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
     }
 
-    public void obtenerJugadores() {
-
-        Call<ArrayList<JugadorResponse>> call = TennisApiAdapter.getApiService().getJugadores("Bearer "+user.getString("access_token", ""));
-
-        call.enqueue(new Callback<ArrayList<JugadorResponse>>() {
-            @Override
-            public void onResponse(Call<ArrayList<JugadorResponse>> call, Response<ArrayList<JugadorResponse>> response) {
-                if(response.isSuccessful()){
-                    ArrayList<JugadorResponse> data = response.body();
-
-                    for(int i=0; i<data.size(); i++){
-                        JugadorResponse row = data.get(i);
-                        jugadores.add(new Jugador(
-                                Integer.parseInt(row.getIdJugador()),
-                                row.getNombre(),
-                                row.getApellido()
-                        ));
-                    }
-                    addItemsOnSpinnerJugadores(jugadores, jugadores.size());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<JugadorResponse>> call, Throwable t) {
-                Toast.makeText(CrearPartidoActivity.this, t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-                Log.d("Error", "Error Respuesta en JSON: " +t.getMessage());
-            }
-        });
-    }
-
-    public void addItemsOnSpinnerJugadores(ArrayList<Jugador> array, int n){
+    public void addItemsOnSpinnerJugadores(){
 
         List<String> dynamicList = new ArrayList<String>();
 
-        for (int i=0; i<n; i++) {
-            Jugador row = array.get(i);
-            dynamicList.add(row.getNombre()+" "+row.getApellido());
+        while(c.moveToNext()){
+            dynamicList.add(c.getString(c.getColumnIndex(TennistatsContract.JugadorEntry.NOMBRE))+" "+c.getString(c.getColumnIndex(TennistatsContract.JugadorEntry.APELLIDO)));
         }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
@@ -115,89 +88,72 @@ public class CrearPartidoActivity extends AppCompatActivity {
         spinnerJugador.setAdapter(dataAdapter);
     }
 
-    public void crearPartido(View view){
+    public void loadJugadores(){
+        new JugadoresLoadTask().execute();
+    }
 
-        int id=-1;
-        Spinner categoria = (Spinner) findViewById(R.id.spinnerCategoriaGameconfig);
+    private void showError(String error) {
+        Toast.makeText(CrearPartidoActivity.this, error, Toast.LENGTH_LONG).show();
+    }
 
-        for(int i=0; i<jugadores.size(); i++){
-            //Busco la ocurrencia
-            Jugador row = jugadores.get(i);
-            if((spinnerJugador.getSelectedItem().toString().indexOf(row.getNombre()) != -1) && (spinnerJugador.getSelectedItem().toString().indexOf(row.getApellido()) != -1)){
-                id=row.getIdJugador();
-            }
+    private class JugadoresLoadTask extends AsyncTask<Void, Void, Cursor> {
+
+        @Override
+        protected Cursor doInBackground(Void... voids) {
+            return db.getAllJugadores();
         }
 
-        if(id >= 0){
-            Date fecha = new Date();
-
-            PartidoBody partido = new PartidoBody(
-                    id,
-                    categoria.getSelectedItem().toString(),
-                    new SimpleDateFormat("yyyy-MM-dd").format(fecha)
-            );
-
-            Call<PartidoResponse> call = TennisApiAdapter.getApiService().createPartido("Bearer "+user.getString("access_token", ""), partido);
-
-            call.enqueue(new Callback<PartidoResponse>() {
-                @Override
-                public void onResponse(Call<PartidoResponse> call, Response<PartidoResponse> response) {
-                    if(response.isSuccessful()){
-                        avanzarCancha(response.body());
-                        //finish();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<PartidoResponse> call, Throwable t) {
-                    Toast.makeText(CrearPartidoActivity.this, t.getMessage(),
-                            Toast.LENGTH_SHORT).show();
-                    Log.d("Error", "Error Respuesta en JSON: " +t.getMessage());
-                }
-            });
+        @Override
+        protected void onPostExecute(Cursor cursor) {
+            if (cursor != null && cursor.getCount() > 0) {
+                c = cursor;
+                addItemsOnSpinnerJugadores();
+            } else {
+                String string = "No hay jugadores cargados";
+                showError(string);
+                c = cursor;
+            }
         }
     }
 
-    public void avanzarCancha(PartidoResponse partido){
+    public void empezarPartido(){
+        Spinner categoria = (Spinner) findViewById(R.id.spinnerCategoriaGameconfig);
+
+        c.moveToPosition(spinnerJugador.getSelectedItemPosition());
+
+        partido = new Partido(
+                c.getInt(c.getColumnIndex(TennistatsContract.JugadorEntry._ID)),
+                fechaS,
+                categoria.getSelectedItem().toString(),
+                SessionPrefs.get(CrearPartidoActivity.this).getUsername()
+        );
+
+        new AddPartidoTask().execute(partido);
+    }
+
+    public void showCancha(Partido partido){
         Intent intent = new Intent(this, CanchaActivity.class);
 
         intent.putExtra("partido", partido);
         startActivity(intent);
     }
 
-    public class PartidoBody{
-        private int idJugador;
-        private String categoria, fecha;
-        //private Date fecha;
+    private class AddPartidoTask extends AsyncTask<Partido, Void, Boolean> {
 
-        public PartidoBody(int idJugador, String categoria, String fecha){
-            this.idJugador = idJugador;
-            this.categoria = categoria;
-            this.fecha = fecha;
+        @Override
+        protected Boolean doInBackground(Partido... params) {
+            return db.savePartido(params[0]) > 0;
         }
 
-        public int getIdJugador() {
-            return idJugador;
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                showError("Partido creado.");
+                showCancha(partido);
+            } else {
+                showError("Error al agregar partido.");
+            }
         }
 
-        public void setIdJugador(int idJugador) {
-            this.idJugador = idJugador;
-        }
-
-        public String getCategoria() {
-            return categoria;
-        }
-
-        public void setCategoria(String categoria) {
-            this.categoria = categoria;
-        }
-
-        public String getFecha() {
-            return fecha;
-        }
-
-        public void setFecha(String fecha) {
-            this.fecha = fecha;
-        }
     }
 }

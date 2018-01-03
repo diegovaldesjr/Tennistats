@@ -21,26 +21,22 @@
     <string name="text_button_verestadisticas">Ver Estadisticas</string>
 
     <string-array name="dropdown_genero">
-        <item>Eliga un genero</item>
         <item>Masculino</item>
         <item>Femenino</item>
     </string-array>
 
     <string-array name="dropdown_mano">
-        <item>Mano diestra</item>
         <item>Derecha</item>
         <item>Izquierda</item>
     </string-array>
 
     <string-array name="dropdown_categoria">
-        <item>Elegir categoria</item>
         <item>Sub-17</item>
         <item>Sub-18</item>
         <item>Sub-21</item>
     </string-array>
 
     <string-array name="dropdown_sets">
-        <item>Elegir set</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -57,7 +53,6 @@
     <string name="spinnerSets">Sets</string>
     <string name="title_activity_login2">Sign in</string>
 
-    <!-- Strings related to login -->
     <string name="error_invalid_user_id">Username invalido</string>
     <string name="error_invalid_password">Contraseña demasiado corta</string>
     <string name="error_incorrect_password">Contraseña invalida</string>
@@ -67,4 +62,9 @@
     <string name="hint_username_registrar">Ingrese username</string>
     <string name="hint_password_registrar">Ingrese contraseña</string>
     <string name="registrar_usuario">Registrar usuario.</string>
+    <string name="error_invalid_nombre">Nombre invalido</string>
+    <string name="error_invalid_apellido">Apellido invalido</string>
+    <string name="error_invalid_edad">Edad invalida</string>
+    <string name="error_invalid_genero">Genero invalido</string>
+    <string name="error_invalid_mano">Mano invalida</string>
 </resources>

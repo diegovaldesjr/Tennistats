@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.diegovaldesjr.tennistats.R;
 import com.diegovaldesjr.tennistats.io.response.PartidoResponse;
 import com.diegovaldesjr.tennistats.model.Jugada;
+import com.diegovaldesjr.tennistats.model.Partido;
 import com.diegovaldesjr.tennistats.model.Saque;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class CanchaActivity extends AppCompatActivity {
     ArrayList<Saque> saques;
     ArrayList<Jugada> jugadas;
     String jugada, golpe, zona;
+    private AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +34,13 @@ public class CanchaActivity extends AppCompatActivity {
 
         showToolbar(getResources().getString(R.string.app_name), true);
 
+        builder = new AlertDialog.Builder(CanchaActivity.this);
+
         indice = 1;
         saques = new ArrayList<>();
         jugadas = new ArrayList<>();
         jugada = golpe = "";
-        PartidoResponse partido = (PartidoResponse) getIntent().getSerializableExtra("partido");
+        Partido partido = (Partido) getIntent().getSerializableExtra("partido");
 
         ImageView zona1 = (ImageView) findViewById(R.id.Zona1);
         ImageView zona2 = (ImageView) findViewById(R.id.Zona2);
@@ -133,8 +137,6 @@ public class CanchaActivity extends AppCompatActivity {
     }
 
     public void verDatos(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
-
         builder.setTitle("Datos")
                 .setMessage("Aqui van los datos")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -148,8 +150,6 @@ public class CanchaActivity extends AppCompatActivity {
     }
 
     public void terminarPartido(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
-
         builder.setTitle("Datos")
                 .setMessage("Terminar")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -169,7 +169,6 @@ public class CanchaActivity extends AppCompatActivity {
     }
 
     public void apuntarJugada(String zona){
-        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
         final CharSequence[] items = new CharSequence[2];
 
         this.zona = "zona "+zona;
@@ -205,8 +204,6 @@ public class CanchaActivity extends AppCompatActivity {
     }
 
     public void tipoGolpe(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
-
         final CharSequence[] items = new CharSequence[5];
 
         items[0] = "Normal";
@@ -240,8 +237,6 @@ public class CanchaActivity extends AppCompatActivity {
     }
 
     public void tipoJugada(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
-
         final CharSequence[] items = new CharSequence[4];
 
         items[0] = "Out";
@@ -279,8 +274,6 @@ public class CanchaActivity extends AppCompatActivity {
     }
 
     public void tipoSaque(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
-
         final CharSequence[] items = new CharSequence[2];
 
         items[0] = "Primer saque";
@@ -311,8 +304,6 @@ public class CanchaActivity extends AppCompatActivity {
     }
 
     public void tipoSaqueGolpe(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
-
         final CharSequence[] items = new CharSequence[2];
 
         items[0] = "Ace";
@@ -345,6 +336,10 @@ public class CanchaActivity extends AppCompatActivity {
                 });
 
         builder.create().show();
+    }
+
+    private void showMessage(String error) {
+        Toast.makeText(CanchaActivity.this, error, Toast.LENGTH_LONG).show();
     }
 
     public int getIndice() {

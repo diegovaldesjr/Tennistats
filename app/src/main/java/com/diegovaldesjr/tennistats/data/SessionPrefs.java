@@ -57,4 +57,9 @@ public class SessionPrefs {
     public boolean isLoggedIn(){
         return mIsLoggedIn;
     }
+
+    public String getUsername(){
+        return mPrefs.getString("PREF_AFFILIATE_ID","");
+        //return context.getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString("PREF_AFFILIATE_ID","");
+    }
 }

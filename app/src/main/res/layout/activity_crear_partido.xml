@@ -124,14 +124,13 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/login"
+                android:id="@+id/empezarPartido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:text="@string/text_button_gameconfig"
                 android:theme="@style/RaisedButtonDark"
-                android:layout_gravity="center_horizontal"
-                android:onClick="crearPartido"/>
+                android:layout_gravity="center_horizontal"/>
 
         </LinearLayout>
 

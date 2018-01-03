@@ -2,6 +2,7 @@ package com.diegovaldesjr.tennistats.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.diegovaldesjr.tennistats.R;
+import com.diegovaldesjr.tennistats.data.TennistatsContract;
 import com.diegovaldesjr.tennistats.model.Jugador;
 import com.diegovaldesjr.tennistats.view.JugadorActivity;
 
@@ -22,12 +24,12 @@ import java.util.ArrayList;
 
 public class JugadorAdapterRecyclerView extends RecyclerView.Adapter<JugadorAdapterRecyclerView.JugadorViewHolder>{
 
-    private ArrayList<Jugador> jugadores;
     private int resource;
     private Activity activity;
+    private Cursor items;
 
-    public JugadorAdapterRecyclerView(ArrayList<Jugador> jugadores, int resource, Activity activity) {
-        this.jugadores = jugadores;
+    public JugadorAdapterRecyclerView(Cursor items, int resource, Activity activity) {
+        this.items = items;
         this.resource = resource;
         this.activity = activity;
     }
@@ -42,7 +44,16 @@ public class JugadorAdapterRecyclerView extends RecyclerView.Adapter<JugadorAdap
     @Override
     public void onBindViewHolder(JugadorAdapterRecyclerView.JugadorViewHolder holder, int position) {
 
-        final Jugador jugador = jugadores.get(position);
+        items.moveToPosition(position);
+        final Jugador jugador = new Jugador(
+                items.getInt(items.getColumnIndex(TennistatsContract.JugadorEntry._ID)),
+                items.getString(items.getColumnIndex(TennistatsContract.JugadorEntry.NOMBRE)),
+                items.getString(items.getColumnIndex(TennistatsContract.JugadorEntry.APELLIDO)),
+                items.getInt(items.getColumnIndex(TennistatsContract.JugadorEntry.EDAD)),
+                items.getString(items.getColumnIndex(TennistatsContract.JugadorEntry.MANO_DIESTRA)),
+                items.getString(items.getColumnIndex(TennistatsContract.JugadorEntry.GENERO)),
+                items.getString(items.getColumnIndex(TennistatsContract.JugadorEntry.ID_USUARIO))
+        );
 
         holder.jugador.setText(jugador.getNombre()+" "+jugador.getApellido());
 
@@ -59,7 +70,9 @@ public class JugadorAdapterRecyclerView extends RecyclerView.Adapter<JugadorAdap
 
     @Override
     public int getItemCount() {
-        return jugadores.size();
+        if (items != null)
+            return items.getCount();
+        return 0;
     }
 
     public class JugadorViewHolder extends RecyclerView.ViewHolder{

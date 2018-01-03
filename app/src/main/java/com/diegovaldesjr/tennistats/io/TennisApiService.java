@@ -1,5 +1,6 @@
 package com.diegovaldesjr.tennistats.io;
 
+import com.diegovaldesjr.tennistats.io.body.PartidoBody;
 import com.diegovaldesjr.tennistats.io.response.JugadorResponse;
 import com.diegovaldesjr.tennistats.io.response.LoginResponse;
 import com.diegovaldesjr.tennistats.io.response.PartidoResponse;
@@ -36,7 +37,7 @@ public interface TennisApiService {
     Call<ArrayList<PartidoResponse>> getPartidos(@Header("Authorization") String token);
 
     @POST("partidos")
-    Call<PartidoResponse> createPartido(@Header("Authorization") String token, @Body CrearPartidoActivity.PartidoBody partido);
+    Call<PartidoResponse> createPartido(@Header("Authorization") String token, @Body PartidoBody partido);
 
     @GET("jugadores/{id}")
     Call<JugadorResponse> getJugador(@Path("id") int id, @Header("Authorization") String token);

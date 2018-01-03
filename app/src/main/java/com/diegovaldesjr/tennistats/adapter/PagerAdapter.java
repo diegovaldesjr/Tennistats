@@ -13,7 +13,9 @@ import com.diegovaldesjr.tennistats.view.fragments.TabPartidos;
 
 public class PagerAdapter extends FragmentPagerAdapter {
 
-    int nTabs;
+    private int nTabs;
+    private TabPartidos tab1;
+    private TabJugadores tab2;
 
     public PagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
@@ -24,10 +26,10 @@ public class PagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                TabPartidos tab1 = new TabPartidos();
+                tab1 = new TabPartidos();
                 return tab1;
             case 1:
-                TabJugadores tab2 = new TabJugadores();
+                tab2 = new TabJugadores();
                 return tab2;
             default:
                 return null;
@@ -37,5 +39,10 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return nTabs;
+    }
+
+    public void actualizar(){
+        tab1.loadPartidos();
+        tab2.loadJugadores();
     }
 }

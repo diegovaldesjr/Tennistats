@@ -1,49 +1,67 @@
 package com.diegovaldesjr.tennistats.view;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.diegovaldesjr.tennistats.R;
 import com.diegovaldesjr.tennistats.adapter.PartidoAdapterRecyclerView;
-import com.diegovaldesjr.tennistats.io.TennisApiAdapter;
-import com.diegovaldesjr.tennistats.io.response.JugadorResponse;
-import com.diegovaldesjr.tennistats.io.response.PartidoResponse;
+import com.diegovaldesjr.tennistats.data.TennistatsContract;
+import com.diegovaldesjr.tennistats.data.TennistatsDbHelper;
 import com.diegovaldesjr.tennistats.model.Jugador;
 import com.diegovaldesjr.tennistats.model.Partido;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class JugadorActivity extends AppCompatActivity {
 
-    SharedPreferences user;
+    private TextView nombre;
+    private TextView edad;
+    private TextView genero;
+    private TextView mano;
+    private RecyclerView partidosRecycler;
+    private Cursor c;
+    private TennistatsDbHelper db;
+    private Jugador jugador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jugador);
 
-        user = getSharedPreferences("user", Context.MODE_PRIVATE);
-        Jugador jugador = (Jugador) getIntent().getSerializableExtra("jugador");
-
-        cargarDatos(jugador.getIdJugador());
-
         showToolbar(getResources().getString(R.string.app_name), true);
+
+        nombre = (TextView) findViewById(R.id.nombreJugador);
+        edad = (TextView) findViewById(R.id.edadJugador);
+        genero = (TextView) findViewById(R.id.generoJugador);
+        mano = (TextView) findViewById(R.id.manoJugador);
+        partidosRecycler = (RecyclerView) findViewById(R.id.jugadorPartidoRecycler);
+
+        jugador = (Jugador) getIntent().getSerializableExtra("jugador");
+        db = new TennistatsDbHelper(JugadorActivity.this);
+
+        nombre.setText(jugador.getNombre()+" "+jugador.getApellido());
+        edad.setText(String.valueOf(jugador.getEdad()));
+        genero.setText(jugador.getGenero());
+        mano.setText(jugador.getManoDiestra());
+
+        loadPartidos();
+
+        Button button = (Button) findViewById(R.id.verEstadisticasJugador);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     public void showToolbar(String tittle, boolean upButton){
@@ -59,69 +77,78 @@ public class JugadorActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
     }
 
-    public void cargarDatos(int id){
-        final ArrayList<Partido> partidos = new ArrayList<>();
-
-        Call<JugadorResponse> call = TennisApiAdapter.getApiService().getJugador(id, "Bearer "+user.getString("access_token", ""));
-
-        call.enqueue(new Callback<JugadorResponse>() {
-            @Override
-            public void onResponse(Call<JugadorResponse> call, Response<JugadorResponse> response) {
-                if(response.isSuccessful()){
-                    JugadorResponse jugador = response.body();
-
-                    TextView nombre = (TextView) findViewById(R.id.nombreJugador);
-                    TextView edad = (TextView) findViewById(R.id.edadJugador);
-                    TextView genero = (TextView) findViewById(R.id.generoJugador);
-                    TextView mano = (TextView) findViewById(R.id.manoJugador);
-
-                    nombre.setText(jugador.getNombre()+" "+jugador.getApellido());
-                    edad.setText(jugador.getEdad());
-                    genero.setText(jugador.getGenero());
-                    mano.setText(jugador.getManoDiestra());
-
-                    ArrayList<PartidoResponse> data = jugador.getPartidos();
-
-                    for(int i=0; i<data.size(); i++){
-                        PartidoResponse row = data.get(i);
-
-                        try {
-                            SimpleDateFormat parseador = new SimpleDateFormat("yyyy-MM-dd");
-                            Date fecha = parseador.parse(row.getFecha());
-
-                            partidos.add(new Partido(
-                                    Integer.parseInt(row.getIdPartido()),
-                                    Integer.parseInt(jugador.getIdJugador()),
-                                    jugador.getNombre()+" "+jugador.getApellido(),
-                                    fecha,
-                                    row.getCategoria(),
-                                    row.getSets()
-                            ));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    actualizarRecyclerView(partidos);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JugadorResponse> call, Throwable t) {
-                Toast.makeText(JugadorActivity.this, t.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-                Log.d("Error", "Error Respuesta en JSON: " +t.getMessage());
-            }
-        });
+    public void loadPartidos(){
+        new PartidosLoadTask().execute();
     }
 
     public void actualizarRecyclerView(ArrayList<Partido> partidos){
-        RecyclerView partidosRecycler = (RecyclerView) findViewById(R.id.jugadorPartidoRecycler);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(JugadorActivity.this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         partidosRecycler.setLayoutManager(linearLayoutManager);
 
         PartidoAdapterRecyclerView partidoAdapterRecyclerView = new PartidoAdapterRecyclerView(partidos, R.layout.partido_list, this);
         partidosRecycler.setAdapter(partidoAdapterRecyclerView);
+    }
+
+    public void formatearData(){
+        ArrayList<Partido> partidos = new ArrayList<>();
+
+        while (c.moveToNext()){
+            Partido partido = new Partido(
+                    c.getInt(c.getColumnIndex(TennistatsContract.PartidoEntry._ID)),
+                    c.getInt(c.getColumnIndex(TennistatsContract.PartidoEntry.ID_JUGADOR)),
+                    c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.FECHA)),
+                    c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.CATEGORIA)),
+                    c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.ID_USUARIO)),
+                    null,
+                    new Jugador(
+                            c.getInt(c.getColumnIndex(TennistatsContract.PartidoEntry.ID_JUGADOR)),
+                            c.getString(c.getColumnIndex(TennistatsContract.JugadorEntry.NOMBRE)),
+                            c.getString(c.getColumnIndex(TennistatsContract.JugadorEntry.APELLIDO))
+                    )
+            );
+            /*
+            ArrayList<Set> sets = new ArrayList<>();
+
+            while(partido.getIdPartido() == c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.ID_PARTIDO))){
+                sets.add(new Set(
+                        c.getInt(c.getColumnIndex(TennistatsContract.SetEntry._ID)),
+                        c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.ID_PARTIDO)),
+                        c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.NUMERO)),
+                        c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.PUNTAJEJ)),
+                        c.getInt(c.getColumnIndex(TennistatsContract.SetEntry.PUNTAJEO)),
+                        c.getString(c.getColumnIndex(TennistatsContract.SetEntry.GANADOR))
+                ));
+            }
+
+            partido.setSets(sets);*/
+            partidos.add(partido);
+        }
+
+        actualizarRecyclerView(partidos);
+    }
+
+    private void showError(String error) {
+        Toast.makeText(JugadorActivity.this, error, Toast.LENGTH_LONG).show();
+    }
+
+    private class PartidosLoadTask extends AsyncTask<Void, Void, Cursor> {
+
+        @Override
+        protected Cursor doInBackground(Void... voids) {
+            return db.getPartidosPorJugador(String.valueOf(jugador.getIdJugador()));
+        }
+
+        @Override
+        protected void onPostExecute(Cursor cursor) {
+            if (cursor != null && cursor.getCount() > 0) {
+                c = cursor;
+                formatearData();
+            } else {
+                String string = "No hay partidos cargados";
+                showError(string);
+                c = cursor;
+            }
+        }
     }
 }
