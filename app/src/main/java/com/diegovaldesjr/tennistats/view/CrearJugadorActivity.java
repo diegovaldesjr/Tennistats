@@ -29,6 +29,7 @@ public class CrearJugadorActivity extends AppCompatActivity {
     private TextInputLayout mFloatLabelEdad;
 
     private TennistatsDbHelper db;
+    private String idUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class CrearJugadorActivity extends AppCompatActivity {
         mFloatLabelEdad = (TextInputLayout) findViewById(R.id.float_label_edad_jugador);
 
         db = new TennistatsDbHelper(CrearJugadorActivity.this);
-
+        idUsuario = SessionPrefs.get(CrearJugadorActivity.this).getUsername();
     }
 
     public void registrarJugador(View view){
@@ -106,7 +107,7 @@ public class CrearJugadorActivity extends AppCompatActivity {
                     Integer.parseInt(edad),
                     mano,
                     genero,
-                    SessionPrefs.get(CrearJugadorActivity.this).getUsername()
+                    idUsuario
             );
 
             //Guardar jugador

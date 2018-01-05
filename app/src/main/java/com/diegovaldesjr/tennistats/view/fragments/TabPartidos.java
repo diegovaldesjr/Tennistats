@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.diegovaldesjr.tennistats.R;
 import com.diegovaldesjr.tennistats.adapter.PartidoAdapterRecyclerView;
+import com.diegovaldesjr.tennistats.data.SessionPrefs;
 import com.diegovaldesjr.tennistats.data.TennistatsContract;
 import com.diegovaldesjr.tennistats.data.TennistatsDbHelper;
 import com.diegovaldesjr.tennistats.model.Jugador;
@@ -33,6 +34,7 @@ public class TabPartidos extends Fragment {
     private Cursor c;
 
     private RecyclerView partidosRecycler;
+    private String idUsuario;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class TabPartidos extends Fragment {
 
         partidosRecycler = (RecyclerView) view.findViewById(R.id.partidoRecycler);
         db = new TennistatsDbHelper(getContext());
+        idUsuario = SessionPrefs.get(getActivity()).getUsername();
 
         loadPartidos();
 
@@ -113,7 +116,7 @@ public class TabPartidos extends Fragment {
 
         @Override
         protected Cursor doInBackground(Void... voids) {
-            return db.getAllPartidos();
+            return db.getAllPartidos(idUsuario);
         }
 
         @Override

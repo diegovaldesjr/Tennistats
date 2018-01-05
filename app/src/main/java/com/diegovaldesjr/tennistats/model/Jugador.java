@@ -97,7 +97,7 @@ public class Jugador implements Serializable {
 
     public ContentValues jugadorToContentValues() {
         ContentValues values = new ContentValues();
-        values.put(TennistatsContract.JugadorEntry.ID_USUARIO, idJugador);
+        values.put(TennistatsContract.JugadorEntry.ID_USUARIO, idUsuario);
         values.put(TennistatsContract.JugadorEntry.NOMBRE, nombre);
         values.put(TennistatsContract.JugadorEntry.APELLIDO, apellido);
         values.put(TennistatsContract.JugadorEntry.EDAD, edad);

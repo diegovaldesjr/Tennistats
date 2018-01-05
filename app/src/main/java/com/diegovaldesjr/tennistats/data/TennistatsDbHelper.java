@@ -123,16 +123,10 @@ public class TennistatsDbHelper extends SQLiteOpenHelper {
 
     }
 
-    public Cursor getAllJugadores() {
-        return getReadableDatabase()
-                .query(
-                        TennistatsContract.JugadorEntry.TABLE_NAME,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null);
+    public Cursor getAllJugadores(String idUsuario) {
+        String query = "SELECT * FROM jugador WHERE idUsuario = '"+idUsuario+"'";
+
+        return getReadableDatabase().rawQuery(query, null);
     }
 
     public Cursor getJugadorById(String jugadorId) {
@@ -147,10 +141,10 @@ public class TennistatsDbHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    public Cursor getAllPartidos() {
+    public Cursor getAllPartidos(String idUsuario) {
         String query = "SELECT partido.*, jugador.nombre, jugador.apellido, sets.* FROM ((partido INNER JOIN jugador " +
-                "ON partido.idJugador = jugador."+TennistatsContract.JugadorEntry._ID+") " +
-                "INNER JOIN sets ON partido."+TennistatsContract.PartidoEntry._ID+" = sets.idPartido)";
+                "ON partido.idJugador = jugador."+TennistatsContract.JugadorEntry._ID+" AND partido.idUsuario = '"+idUsuario+"' AND " +
+                "jugador.idUsuario = '"+idUsuario+"') " + "INNER JOIN sets ON partido."+TennistatsContract.PartidoEntry._ID+" = sets.idPartido)";
 
         return getReadableDatabase().rawQuery(query, null);
     }
@@ -163,11 +157,11 @@ public class TennistatsDbHelper extends SQLiteOpenHelper {
         return getReadableDatabase().rawQuery(query, null);
     }
 
-    public Cursor getPartidosPorJugador(String id) {
+    public Cursor getPartidosPorJugador(String id, String idUsuario) {
         String query = "SELECT partido.*, jugador.nombre, jugador.apellido, sets.* FROM ((partido INNER JOIN jugador " +
                 "ON partido.idJugador = jugador."+TennistatsContract.JugadorEntry._ID+" AND jugador."+
-                TennistatsContract.JugadorEntry._ID +" = "+id+") " + "INNER JOIN sets ON partido."+
-                TennistatsContract.PartidoEntry._ID+" = sets.idPartido)";
+                TennistatsContract.JugadorEntry._ID +" = "+id+" AND partido.idUsuario = '"+idUsuario+"' AND jugador.idUsuario = '"
+                +idUsuario+"') " + "INNER JOIN sets ON partido."+ TennistatsContract.PartidoEntry._ID+" = sets.idPartido)";
 
         return getReadableDatabase().rawQuery(query, null);
     }

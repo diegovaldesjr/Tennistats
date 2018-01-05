@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         mFloatLabelPassword.setError(null);
 
         // Store values at the time of the login attempt.
-        String username = this.username.getText().toString();
+        final String username = this.username.getText().toString();
         String password = this.contraseña.getText().toString();
 
         boolean cancel = false;
@@ -134,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     if(response.isSuccessful()){
                         LoginResponse data =  response.body();
+                        data.setUsername(username);
 
                         SessionPrefs.get(LoginActivity.this).saveAffiliate(data);
                         showAppointmentsScreen();

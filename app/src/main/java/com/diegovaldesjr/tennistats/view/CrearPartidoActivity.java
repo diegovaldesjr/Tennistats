@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,6 +33,7 @@ public class CrearPartidoActivity extends AppCompatActivity {
     private Cursor c;
     private String fechaS;
     private Partido partido;
+    private String idUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class CrearPartidoActivity extends AppCompatActivity {
 
         TextView fecha = (TextView) findViewById(R.id.fechaGameConfig);
 
+        idUsuario = SessionPrefs.get(this).getUsername();
         SimpleDateFormat parseador = new SimpleDateFormat("yyyy-MM-dd");
         fechaS = parseador.format(new Date());
         fecha.setText(fechaS);
@@ -100,7 +103,7 @@ public class CrearPartidoActivity extends AppCompatActivity {
 
         @Override
         protected Cursor doInBackground(Void... voids) {
-            return db.getAllJugadores();
+            return db.getAllJugadores(idUsuario);
         }
 
         @Override
@@ -125,11 +128,10 @@ public class CrearPartidoActivity extends AppCompatActivity {
                 c.getInt(c.getColumnIndex(TennistatsContract.JugadorEntry._ID)),
                 fechaS,
                 categoria.getSelectedItem().toString(),
-                SessionPrefs.get(CrearPartidoActivity.this).getUsername()
+                idUsuario
         );
 
         new AddPartidoTask().execute(partido);
-        //showCancha(partido);
     }
 
     public void showCancha(Partido partido){

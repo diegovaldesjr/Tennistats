@@ -111,22 +111,4 @@ public class Partido implements Serializable {
         values.put(TennistatsContract.PartidoEntry.FECHA, fecha);
         return values;
     }
-
-    public ArrayList<Partido> formatearPartidos(Cursor c){
-        ArrayList<Partido> partidos = new ArrayList<>();
-
-        while (c.moveToNext()){
-            Partido partido = new Partido(
-                    c.getInt(c.getColumnIndex(TennistatsContract.PartidoEntry._ID)),
-                    c.getInt(c.getColumnIndex(TennistatsContract.PartidoEntry.ID_JUGADOR)),
-                    c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.FECHA)),
-                    c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.CATEGORIA)),
-                    c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.ID_USUARIO))
-            );
-
-            partidos.add(partido);
-        }
-
-        return partidos;
-    }
 }

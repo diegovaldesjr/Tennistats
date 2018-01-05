@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.diegovaldesjr.tennistats.R;
 import com.diegovaldesjr.tennistats.adapter.JugadorAdapterRecyclerView;
+import com.diegovaldesjr.tennistats.data.SessionPrefs;
 import com.diegovaldesjr.tennistats.data.TennistatsDbHelper;
 
 
@@ -26,6 +27,7 @@ public class TabJugadores extends Fragment {
     private Cursor c;
 
     private RecyclerView jugadoresRecycler;
+    private String idUsuario;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class TabJugadores extends Fragment {
 
         jugadoresRecycler = (RecyclerView) view.findViewById(R.id.jugadoresRecycler);
         db = new TennistatsDbHelper(getContext());
+        idUsuario = SessionPrefs.get(getActivity()).getUsername();
 
         loadJugadores();
 
@@ -60,7 +63,7 @@ public class TabJugadores extends Fragment {
 
         @Override
         protected Cursor doInBackground(Void... voids) {
-            return db.getAllJugadores();
+            return db.getAllJugadores(idUsuario);
         }
 
         @Override

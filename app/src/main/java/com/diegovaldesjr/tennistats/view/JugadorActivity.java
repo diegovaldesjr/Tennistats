@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.diegovaldesjr.tennistats.R;
 import com.diegovaldesjr.tennistats.adapter.PartidoAdapterRecyclerView;
+import com.diegovaldesjr.tennistats.data.SessionPrefs;
 import com.diegovaldesjr.tennistats.data.TennistatsContract;
 import com.diegovaldesjr.tennistats.data.TennistatsDbHelper;
 import com.diegovaldesjr.tennistats.model.Jugador;
@@ -32,6 +33,7 @@ public class JugadorActivity extends AppCompatActivity {
     private Cursor c;
     private TennistatsDbHelper db;
     private Jugador jugador;
+    private String idUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class JugadorActivity extends AppCompatActivity {
 
         jugador = (Jugador) getIntent().getSerializableExtra("jugador");
         db = new TennistatsDbHelper(JugadorActivity.this);
+        idUsuario = SessionPrefs.get(this).getUsername();
 
         nombre.setText(jugador.getNombre()+" "+jugador.getApellido());
         edad.setText(String.valueOf(jugador.getEdad()));
@@ -145,7 +148,7 @@ public class JugadorActivity extends AppCompatActivity {
 
         @Override
         protected Cursor doInBackground(Void... voids) {
-            return db.getPartidosPorJugador(String.valueOf(jugador.getIdJugador()));
+            return db.getPartidosPorJugador(String.valueOf(jugador.getIdJugador()), idUsuario);
         }
 
         @Override
