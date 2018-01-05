@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.diegovaldesjr.tennistats.R;
 import com.diegovaldesjr.tennistats.data.TennistatsDbHelper;
-import com.diegovaldesjr.tennistats.io.response.PartidoResponse;
 import com.diegovaldesjr.tennistats.model.Jugada;
 import com.diegovaldesjr.tennistats.model.Partido;
 import com.diegovaldesjr.tennistats.model.Saque;
@@ -40,6 +39,9 @@ public class CanchaActivity extends AppCompatActivity {
     private String selection;
     private Boolean finalizar=false, avanzar=false;
 
+    private ArrayList<Saque> saques;
+    private ArrayList<Jugada> jugadas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,9 @@ public class CanchaActivity extends AppCompatActivity {
 
         saque = new Saque();
         jugada = new Jugada();
+        saques = new ArrayList<>();
+        jugadas = new ArrayList<>();
+
         set = new Set(partido.getIdPartido(), nSet, 0, 0, "");
 
         new AddSetTask().execute(set);
@@ -156,8 +161,25 @@ public class CanchaActivity extends AppCompatActivity {
 
     public void verDatos(){
         AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
-        builder.setTitle("Datos")
-                .setMessage("Aqui van los datos")
+        LayoutInflater inflater = this.getLayoutInflater();
+        String mensaje = "";
+
+        View v = inflater.inflate(R.layout.dialog_ver_jugadas, null);
+        TextView textView = (TextView) v.findViewById(R.id.mensajeVerJugada);
+
+        for(int i=0, j=0, k=0; k<(indice-1); k++){
+            if(jugadas.size() > 0 && jugadas.get(i).getIndice() == (k+1)){
+                mensaje += "Jugada:\nGolpe:"+jugadas.get(i).getTipoGolpe()+"\tTipo:"+jugadas.get(i).getTipoJugada()+"\tZona:"+jugadas.get(i).getZona() +"\n\n";
+                i++;
+            }else if(saques.size() > 0 && saques.get(j).getIndice() == (k+1)){
+                mensaje += "Saque:\nGolpe:"+saques.get(j).getTipoGolpe()+"\tTipo:"+saques.get(j).getTipoSaque()+"\tZona:"+saques.get(j).getZona() +"\n\n";
+                j++;
+            }
+        }
+
+        textView.setText(mensaje);
+        builder.setView(v)
+                .setTitle("Datos")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -476,6 +498,7 @@ public class CanchaActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
             if (result) {
                 showMessage("Saque agregado.");
+                saques.add(new Saque(saque.getIndice(), saque.getIdSet(), saque.getZona(), saque.getTipoSaque(), saque.getTipoGolpe()));
             } else {
                 showMessage("Error al registrar saque.");
             }
@@ -494,6 +517,7 @@ public class CanchaActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
             if (result) {
                 showMessage("Jugada agregada.");
+                jugadas.add(new Jugada(jugada.getIndice(), jugada.getIdSet(), jugada.getZona(), jugada.getTipoGolpe(), jugada.getTipoJugada()));
             } else {
                 showMessage("Error al registrar jugada.");
             }
