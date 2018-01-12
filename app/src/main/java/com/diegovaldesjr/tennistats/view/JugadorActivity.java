@@ -90,7 +90,7 @@ public class JugadorActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         partidosRecycler.setLayoutManager(linearLayoutManager);
 
-        PartidoAdapterRecyclerView partidoAdapterRecyclerView = new PartidoAdapterRecyclerView(partidos, R.layout.partido_list, this);
+        PartidoAdapterRecyclerView partidoAdapterRecyclerView = new PartidoAdapterRecyclerView(partidos, R.layout.partido_list, this, db);
         partidosRecycler.setAdapter(partidoAdapterRecyclerView);
     }
 

@@ -1,19 +1,25 @@
 package com.diegovaldesjr.tennistats.io.response;
 
+import java.util.ArrayList;
+
 /**
  * Created by diego on 26/11/2017.
  */
 
 public class SetResponse {
-    String idSet, numero, puntajej, puntajeo, ganador, Partido_idPartido;
+    String idSet, numero, puntajej, puntajeo, ganador, idPartido;
+    ArrayList<JugadaResponse> jugadas;
+    ArrayList<SaqueResponse> saques;
 
-    public SetResponse(String idSet, String numero, String puntajej, String puntajeo, String ganador, String partido_idPartido) {
+    public SetResponse(String idSet, String numero, String puntajej, String puntajeo, String ganador, String idPartido, ArrayList<JugadaResponse> jugadas, ArrayList<SaqueResponse> saques) {
         this.idSet = idSet;
         this.numero = numero;
         this.puntajej = puntajej;
         this.puntajeo = puntajeo;
         this.ganador = ganador;
-        Partido_idPartido = partido_idPartido;
+        this.idPartido = idPartido;
+        this.jugadas = jugadas;
+        this.saques = saques;
     }
 
     public String getIdSet() {
@@ -57,10 +63,34 @@ public class SetResponse {
     }
 
     public String getPartido_idPartido() {
-        return Partido_idPartido;
+        return idPartido;
     }
 
     public void setPartido_idPartido(String partido_idPartido) {
-        Partido_idPartido = partido_idPartido;
+        idPartido = partido_idPartido;
+    }
+
+    public String getIdPartido() {
+        return idPartido;
+    }
+
+    public void setIdPartido(String idPartido) {
+        this.idPartido = idPartido;
+    }
+
+    public ArrayList<JugadaResponse> getJugadas() {
+        return jugadas;
+    }
+
+    public void setJugadas(ArrayList<JugadaResponse> jugadas) {
+        this.jugadas = jugadas;
+    }
+
+    public ArrayList<SaqueResponse> getSaques() {
+        return saques;
+    }
+
+    public void setSaques(ArrayList<SaqueResponse> saques) {
+        this.saques = saques;
     }
 }

@@ -351,7 +351,7 @@ public class CanchaActivity extends AppCompatActivity {
 
         items[0] = "Out";
         items[1] = "Punto";
-        items[2] = "Error Forzado";
+        items[2] = "Error forzado";
         items[3] = "Error no forzado";
 
         builder.setTitle("Golpe:"+jugada.getTipoGolpe()+", seleccion tipo de jugada")
@@ -385,8 +385,8 @@ public class CanchaActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
         final CharSequence[] items = new CharSequence[2];
 
-        items[0] = "Primer saque";
-        items[1] = "Segundo saque";
+        items[0] = "Primero";
+        items[1] = "Segundo";
 
         builder.setTitle("Saque, seleccione tipo de saque")
                 .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
@@ -413,10 +413,12 @@ public class CanchaActivity extends AppCompatActivity {
 
     public void saqueTipoGolpe(){
         AlertDialog.Builder builder = new AlertDialog.Builder(CanchaActivity.this);
-        final CharSequence[] items = new CharSequence[2];
+        final CharSequence[] items = new CharSequence[4];
 
         items[0] = "Ace";
         items[1] = "Falta";
+        items[2] = "Gano";
+        items[3] = "Perdio";
 
         builder.setTitle(saque.getTipoSaque()+", seleccione tipo de golpe")
                 .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {

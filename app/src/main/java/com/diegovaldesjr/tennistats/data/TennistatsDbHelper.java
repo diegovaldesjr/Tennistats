@@ -174,4 +174,30 @@ public class TennistatsDbHelper extends SQLiteOpenHelper {
                 new String[]{id}
         );
     }
+
+    public int deleteJugador(String idJugador) {
+        return getWritableDatabase().delete(
+                TennistatsContract.JugadorEntry.TABLE_NAME,
+                TennistatsContract.JugadorEntry._ID + " LIKE ?",
+                new String[]{idJugador});
+    }
+
+    public int deletePartido(String idPartido) {
+        return getWritableDatabase().delete(
+                TennistatsContract.PartidoEntry.TABLE_NAME,
+                TennistatsContract.PartidoEntry._ID + " LIKE ?",
+                new String[]{idPartido});
+    }
+
+    public Cursor getJugadasSet(int idSet) {
+        String query = "SELECT * FROM jugada WHERE idSet = "+idSet;
+
+        return getReadableDatabase().rawQuery(query, null);
+    }
+
+    public Cursor getSaquesSet(int idSet) {
+        String query = "SELECT * FROM saque WHERE idSet = "+idSet;
+
+        return getReadableDatabase().rawQuery(query, null);
+    }
 }

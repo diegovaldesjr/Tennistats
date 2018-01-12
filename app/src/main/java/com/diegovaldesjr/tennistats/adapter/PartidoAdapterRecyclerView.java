@@ -1,16 +1,21 @@
 package com.diegovaldesjr.tennistats.adapter;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.diegovaldesjr.tennistats.data.TennistatsContract;
+import com.diegovaldesjr.tennistats.data.TennistatsDbHelper;
 import com.diegovaldesjr.tennistats.view.PartidoActivity;
 import com.diegovaldesjr.tennistats.R;
 import com.diegovaldesjr.tennistats.model.Partido;
@@ -28,11 +33,13 @@ public class PartidoAdapterRecyclerView extends RecyclerView.Adapter<PartidoAdap
     private int resource;
     private Activity activity;
     private ArrayList<Partido> partidos;
+    private TennistatsDbHelper db;
 
-    public PartidoAdapterRecyclerView(ArrayList<Partido> partidos, int resource, Activity activity) {
+    public PartidoAdapterRecyclerView(ArrayList<Partido> partidos, int resource, Activity activity, TennistatsDbHelper db) {
         this.partidos = partidos;
         this.resource = resource;
         this.activity = activity;
+        this.db = db;
     }
 
     @Override
@@ -77,6 +84,30 @@ public class PartidoAdapterRecyclerView extends RecyclerView.Adapter<PartidoAdap
             }
         });
 
+        holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setTitle("Eliminar")
+                        .setMessage("Seguro que desea eliminar jugador?")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new DeletePartidoTask().execute(String.valueOf(partido.getIdPartido()));
+                                dialog.cancel();
+                            }
+                        })
+                        .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                builder.create().show();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -99,6 +130,27 @@ public class PartidoAdapterRecyclerView extends RecyclerView.Adapter<PartidoAdap
             set2 = (TextView) itemView.findViewById(R.id.set2Partidolist);
             set3 = (TextView) itemView.findViewById(R.id.set3Partidolist);
             categoria = (TextView) itemView.findViewById(R.id.categoriaPartidolist);
+        }
+    }
+
+    private void showError(String error) {
+        Toast.makeText(activity, error, Toast.LENGTH_LONG).show();
+    }
+
+    private class DeletePartidoTask extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            return db.deletePartido(params[0]) > 0;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if(result){
+                showError("Partido borrado.");
+            }else{
+                showError("Error al borrar partido");
+            }
         }
     }
 }

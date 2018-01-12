@@ -7,27 +7,27 @@ import java.util.ArrayList;
  */
 
 public class JugadorResponse {
-    String idJugador, nombre, apellido, edad, manoDiestra, genero, Usuario_idUsuario;
+    String idJugador, nombre, apellido, edad, manoDiestra, genero, idUsuario;
     ArrayList<PartidoResponse> partidos;
 
-    public JugadorResponse(String idJugador, String nombre, String apellido, String edad, String manoDiestra, String genero, String usuario_idUsuario) {
+    public JugadorResponse(String idJugador, String nombre, String apellido, String edad, String manoDiestra, String genero, String idUsuario) {
         this.idJugador = idJugador;
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
         this.manoDiestra = manoDiestra;
         this.genero = genero;
-        this.Usuario_idUsuario = usuario_idUsuario;
+        this.idUsuario = idUsuario;
     }
 
-    public JugadorResponse(String idJugador, String nombre, String apellido, String edad, String manoDiestra, String genero, String usuario_idUsuario, ArrayList<PartidoResponse> partidos) {
+    public JugadorResponse(String idJugador, String nombre, String apellido, String edad, String manoDiestra, String genero, String idUsuario, ArrayList<PartidoResponse> partidos) {
         this.idJugador = idJugador;
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
         this.manoDiestra = manoDiestra;
         this.genero = genero;
-        this.Usuario_idUsuario = usuario_idUsuario;
+        this.idUsuario = idUsuario;
         this.partidos = partidos;
     }
 
@@ -88,10 +88,18 @@ public class JugadorResponse {
     }
 
     public String getUsuario_idUsuario() {
-        return Usuario_idUsuario;
+        return idUsuario;
     }
 
     public void setUsuario_idUsuario(String usuario_idUsuario) {
-        Usuario_idUsuario = usuario_idUsuario;
+        idUsuario = usuario_idUsuario;
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

@@ -8,19 +8,35 @@ import java.util.ArrayList;
  */
 
 public class PartidoResponse implements Serializable{
-    String idPartido, fecha, descripcion, categoria, Usuario_idUsuario, Jugador_idJugador;
+    String idPartido, fecha, categoria, idUsuario, idJugador, descripcion;
     JugadorResponse jugador;
     ArrayList<SetResponse> sets;
 
-    public PartidoResponse(String idPartido, String fecha, String descripcion, String categoria, String usuario_idUsuario, String jugador_idJugador, JugadorResponse jugador, ArrayList<SetResponse> sets) {
+    public PartidoResponse(String idPartido, String fecha, String descripcion, String categoria, String idUsuario, String idJugador, JugadorResponse jugador, ArrayList<SetResponse> sets) {
         this.idPartido = idPartido;
         this.fecha = fecha;
         this.descripcion = descripcion;
         this.categoria = categoria;
-        this.Usuario_idUsuario = usuario_idUsuario;
-        this.Jugador_idJugador = jugador_idJugador;
+        this.idUsuario = idUsuario;
+        this.idJugador = idJugador;
         this.jugador = jugador;
         this.sets = sets;
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getIdJugador() {
+        return idJugador;
+    }
+
+    public void setIdJugador(String idJugador) {
+        this.idJugador = idJugador;
     }
 
     public ArrayList<SetResponse> getSets() {
@@ -64,19 +80,19 @@ public class PartidoResponse implements Serializable{
     }
 
     public String getUsuario_idUsuario() {
-        return Usuario_idUsuario;
+        return idUsuario;
     }
 
     public void setUsuario_idUsuario(String usuario_idUsuario) {
-        Usuario_idUsuario = usuario_idUsuario;
+        idUsuario = usuario_idUsuario;
     }
 
     public String getJugador_idJugador() {
-        return Jugador_idJugador;
+        return idJugador;
     }
 
     public void setJugador_idJugador(String jugador_idJugador) {
-        Jugador_idJugador = jugador_idJugador;
+        idJugador = jugador_idJugador;
     }
 
     public JugadorResponse getJugador() {

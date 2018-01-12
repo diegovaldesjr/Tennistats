@@ -63,8 +63,8 @@ public class TabPartidos extends Fragment {
                 Partido partido = new Partido(
                         c.getInt(0),
                         c.getInt(c.getColumnIndex(TennistatsContract.PartidoEntry.ID_JUGADOR)),
-                        c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.FECHA)),
                         c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.CATEGORIA)),
+                        c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.FECHA)),
                         c.getString(c.getColumnIndex(TennistatsContract.PartidoEntry.ID_USUARIO)),
                         null,
                         new Jugador(
@@ -104,7 +104,7 @@ public class TabPartidos extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         partidosRecycler.setLayoutManager(linearLayoutManager);
 
-        PartidoAdapterRecyclerView partidoAdapterRecyclerView = new PartidoAdapterRecyclerView(partidos, R.layout.partido_list, getActivity());
+        PartidoAdapterRecyclerView partidoAdapterRecyclerView = new PartidoAdapterRecyclerView(partidos, R.layout.partido_list, getActivity(), db);
         partidosRecycler.setAdapter(partidoAdapterRecyclerView);
     }
 
@@ -123,7 +123,6 @@ public class TabPartidos extends Fragment {
         protected void onPostExecute(Cursor cursor) {
             if (cursor != null && cursor.getCount() > 0) {
                 c = cursor;
-                Log.d("CURSORMMG", cursor.toString());
                 formatearData();
             } else {
                 String string = "No hay partidos cargados";

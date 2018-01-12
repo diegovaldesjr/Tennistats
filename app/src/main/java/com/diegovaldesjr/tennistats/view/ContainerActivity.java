@@ -10,10 +10,13 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.diegovaldesjr.tennistats.R;
 import com.diegovaldesjr.tennistats.adapter.PagerAdapter;
 import com.diegovaldesjr.tennistats.data.SessionPrefs;
+import com.diegovaldesjr.tennistats.data.TennistatsDbHelper;
+import com.diegovaldesjr.tennistats.io.ApiConsultas;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 public class ContainerActivity extends AppCompatActivity {
@@ -46,7 +49,7 @@ public class ContainerActivity extends AppCompatActivity {
         });
     }
 
-    public void showToolbar(String tittle, boolean upButton){
+    public void showToolbar(String tittle, boolean upButton) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tabToolbar);
 
         //Soporte para versiones anteriores
@@ -97,7 +100,13 @@ public class ContainerActivity extends AppCompatActivity {
         sincronizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showMessage("Sincronizando.");
+                new ApiConsultas(
+                        new TennistatsDbHelper(ContainerActivity.this),
+                        SessionPrefs.get(ContainerActivity.this).getUsername(),
+                        SessionPrefs.get(ContainerActivity.this).getToken(),
+                        ContainerActivity.this
+                );
             }
         });
 
@@ -136,6 +145,10 @@ public class ContainerActivity extends AppCompatActivity {
     public void showLogin(){
         startActivity(new Intent(this, LoginActivity.class));
         finish();
+    }
+
+    private void showMessage(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 
     public void showCrearJugador(){

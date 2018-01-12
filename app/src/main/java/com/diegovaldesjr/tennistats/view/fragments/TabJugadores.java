@@ -51,7 +51,7 @@ public class TabJugadores extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         jugadoresRecycler.setLayoutManager(linearLayoutManager);
 
-        JugadorAdapterRecyclerView jugadorAdapterRecyclerView = new JugadorAdapterRecyclerView(c, R.layout.jugador_list, getActivity());
+        JugadorAdapterRecyclerView jugadorAdapterRecyclerView = new JugadorAdapterRecyclerView(c, R.layout.jugador_list, getActivity(), db);
         jugadoresRecycler.setAdapter(jugadorAdapterRecyclerView);
     }
 

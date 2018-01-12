@@ -62,4 +62,9 @@ public class SessionPrefs {
         return mPrefs.getString(PREF_AFFILIATE_ID,null);
         //return context.getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString("PREF_AFFILIATE_ID","");
     }
+
+    public String getToken(){
+        return mPrefs.getString(PREF_AFFILAITE_TOKEN,null);
+        //return context.getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString("PREF_AFFILIATE_ID","");
+    }
 }
